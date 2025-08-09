@@ -64,6 +64,30 @@
             <artifactId>cucumber-java</artifactId>
             <version>${cucumber.version}</version>
         </dependency>
+
+        <!-- Cucumber JUnit Dependency -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>7.22.2</version>
+        <scope>test</scope>
+        </dependency>
+
+        <!-- JUnit Dependency -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Cucumber Reporting Dependency -->
+        <dependency>
+            <groupId>net.masterthought</groupId>
+            <artifactId>maven-cucumber-reporting</artifactId>
+            <version>5.7.0</version>
+        </dependency>
+
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-testng</artifactId>
@@ -114,7 +138,32 @@
                 </configuration>
             </plugin>
 
-            <!-- Plugin Surefire para ejecutar TestNG -->
+
+            <!-- Maven Cucumber Reporting Plugin -->
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>5.7.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <jsonFiles>
+                                <jsonFile>target/cucumber-reports/mobile/Cucumber.json</jsonFile>
+                                <jsonFile>target/cucumber-reports/web/Cucumber.json</jsonFile>
+                            </jsonFiles>
+                            <outputDirectory>${project.build.directory}/cucumber-reports</outputDirectory>
+                            <projectName>Cucumber Combined Report</projectName>
+                        </configuration>
+
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -123,6 +172,7 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>${test.suite}</suiteXmlFile>
                     </suiteXmlFiles>
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
                     <properties>
                         <property>
                             <name>reporter</name>
@@ -131,6 +181,7 @@
                     </properties>
                 </configuration>
             </plugin>
+
 
             <!-- Xray Maven Plugin -->
             <plugin>
@@ -156,29 +207,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>net.masterthought</groupId>
-                <artifactId>maven-cucumber-reporting</artifactId>
-                <version>5.7.0</version>
-                <executions>
-                    <execution>
-                        <id>generate-cucumber-html-report</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <projectName>Tu Proyecto</projectName>
-                            <outputDirectory>target/cucumber-html-reports.html</outputDirectory>
-                            <jsonFiles>
-                                <param>target/cucumber.json</param>
-                            </jsonFiles>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
 

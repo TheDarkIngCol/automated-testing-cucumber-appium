@@ -1,3 +1,14 @@
 # platilla-automated-testing
 appium --allow-cors --base-path /wd/hub
 
+{
+"platformName": "Android",
+"deviceName": "Huawei",
+"platformVersion": "11.0",
+"automationName": "UiAutomator2",
+"udid": "L4SDU17927002305",
+"app": "C:\\Users\\iva59\\Documents\\Proyectos_QA\\prueba-proyecto-serenity\\src\\test\\resources\\apps\\mda-2.2.0-25.apk",
+"noReset": true,
+"fullReset": false,
+"autoGrantPermissions": true
+}
