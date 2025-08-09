@@ -15,7 +15,6 @@ public class MenuPageMobile extends BasePage {
 
     public void menuSuccess() {
         clickBy(menuIcon);
-        scrollToElement(logginButton);
-        clickVisible(logginButton);
+        clickAndScroll(logginButton);
     }
 }

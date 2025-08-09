@@ -71,6 +71,16 @@ public class BasePage {
         }
     }
 
+    public void clickAndScroll(String locator) {
+        if (driver instanceof AppiumDriver) {
+            scrollToElementMobile(locator);
+            click(locator);
+        } else {
+            scrollToElementWeb(locator);
+            click(locator);
+        }
+    }
+
     private void scrollToElementWeb(String locator) {
         WebElement element = findVisible(locator);
         ((JavascriptExecutor) driver).executeScript(
@@ -79,7 +89,7 @@ public class BasePage {
     }
 
     private void scrollToElementMobile(String locator) {
-        int maxSwipes = 5;
+        int maxSwipes = 10;
         for (int i = 0; i < maxSwipes; i++) {
             try {
                 WebElement el = driver.findElement(By.xpath(locator));
