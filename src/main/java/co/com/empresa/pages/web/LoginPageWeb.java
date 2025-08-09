@@ -5,9 +5,9 @@ import org.testng.Assert;
 
 import static co.com.empresa.utilities.Constants.*;
 
-public class LoginPage extends BasePage {
+public class LoginPageWeb extends BasePage {
 
-    public LoginPage() {
+    public LoginPageWeb() {
         super();
     }
 
