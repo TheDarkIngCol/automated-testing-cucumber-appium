@@ -8,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import io.appium.java_client.android.AndroidDriver;
+
+import java.io.File;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -63,16 +65,27 @@ public class Driver extends BasePage {
 
     public static void inicioAppiumDriver() {
         try {
+            String apkPath = System.getProperty("user.dir") + "/src/test/java/resources/apps/mda-2.2.0-25.apk";
+            File apkFile = new File(apkPath);
+            System.out.println("APK Path: " + apkPath);
+            System.out.println("APK exists: " + apkFile.exists());
+
+            if (!apkFile.exists()) {
+                throw new RuntimeException("APK no encontrado en la ruta especificada");
+            }
+
             UiAutomator2Options options = new UiAutomator2Options()
                     .setPlatformName("Android")
                     .setPlatformVersion("11.0")
                     .setDeviceName("Huawei")
                     .setUdid("L4SDU17927002305")
                     .setAutomationName("UiAutomator2")
-                    .setApp(System.getProperty("user.dir") + "/src/test/java/resources/apps/mda-2.2.0-25.apk")
+                    .setApp(apkPath)
                     .setNoReset(false)
                     .setFullReset(true)
                     .autoGrantPermissions();
+
+            System.out.println("Capabilities: " + options.asMap());
 
             driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), options);
             waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
@@ -81,6 +94,7 @@ public class Driver extends BasePage {
             e.printStackTrace();
         }
     }
+
 
 
     public static void cerrarWebDriver() {

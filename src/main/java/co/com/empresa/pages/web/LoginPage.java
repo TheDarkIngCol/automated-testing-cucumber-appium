@@ -1,6 +1,7 @@
 package co.com.empresa.pages.web;
 
 import co.com.empresa.utilities.BasePage;
+import org.testng.Assert;
 
 import static co.com.empresa.utilities.Constants.*;
 
@@ -22,10 +23,14 @@ public class LoginPage extends BasePage {
     }
 
     public void loginFailed() {
-        sendKeys(usernameField, USERNAME);
+        sendKeys(usernameField, USERNAME_WRONG);
         sendKeys(passwordField, PASS_WRONG);
         click(loginButton);
-        String getTextFailed = getText(textFailed);
-        System.out.println("El texto encontrado es: " + getTextFailed);
+    }
+
+    public void errorMessage() {
+        String textFail = getText(textFailed);
+        Assert.assertEquals(textFail, TEXT_EXPECTED_WEB);
+        System.out.println("El texto encontrado es: " + textFail);
     }
 }
