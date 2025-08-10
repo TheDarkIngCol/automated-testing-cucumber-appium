@@ -22,11 +22,11 @@ public class Hooks extends BasePage {
 
 
     @Given("que estoy en la página de login")
-        public void estoyEnLaPaginaDeLogin() {
-        }
+    public void estoyEnLaPaginaDeLogin() {
+    }
 
-        @After
-        public void tearDown(Scenario scenario) {
+    @After
+    public void tearDown(Scenario scenario) {
         if (!scenario.isFailed())
         {
             final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);

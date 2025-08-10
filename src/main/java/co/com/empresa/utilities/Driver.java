@@ -8,9 +8,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import io.appium.java_client.android.AndroidDriver;
-
 import java.io.File;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,12 +16,16 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.net.URL;
 import static co.com.empresa.utilities.Constants.URL;
-import static co.com.empresa.utilities.Constants.BROWSERSTACK_URL;
 
 public class Driver extends BasePage {
 
-    public static void inicioWebDriver(String scenarioName) {
-        driver = Driver.createRemoteDriver(scenarioName);
+    public static final String BROWSERSTACK_USER = System.getenv("BROWSERSTACK_USER");
+    public static final String BROWSERSTACK_KEY = System.getenv("BROWSERSTACK_KEY");
+    public static final String BROWSERSTACK_URL = "https://" + BROWSERSTACK_USER + ":" + BROWSERSTACK_KEY + "@hub-cloud.browserstack.com/wd/hub";
+
+
+    public static void inicioWebDriver(String sessionName) {
+        driver = Driver.createRemoteDriver(sessionName);
         driver.manage().window().maximize();
         driver.get(URL);
         waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
@@ -45,10 +47,24 @@ public class Driver extends BasePage {
             throw new IllegalArgumentException("Session name must not be null or empty.");
         }
 
-        MutableCapabilities capabilities = new MutableCapabilities();
+        // Opciones específicas de BrowserStack
         HashMap<String, Object> bstackOptions = new HashMap<>();
         bstackOptions.put("sessionName", sessionName);
+        bstackOptions.put("projectName", "Testing");
+        bstackOptions.put("buildName", "Prueba_ValDispositivos");
+        bstackOptions.put("local", "false");
+        bstackOptions.put("seleniumVersion", "4.8.0");
+
+        // Configuración del navegador
+        MutableCapabilities capabilities = new MutableCapabilities();
         capabilities.setCapability("bstack:options", bstackOptions);
+        capabilities.setCapability("browserName", "Chrome");
+        capabilities.setCapability("browserVersion", "latest");
+
+        // Para abrir en modo incógnito en Chrome
+        HashMap<String, Object> chromeOptions = new HashMap<>();
+        chromeOptions.put("args", new String[] { "--incognito" });
+        capabilities.setCapability("goog:chromeOptions", chromeOptions);
 
         try {
             RemoteWebDriver driver = new RemoteWebDriver(new URI(BROWSERSTACK_URL).toURL(), capabilities);
@@ -61,8 +77,8 @@ public class Driver extends BasePage {
             String msg = "La URL de BrowserStack tiene un formato inválido (URL): " + BROWSERSTACK_URL;
             throw new IllegalArgumentException(msg, e);
         }
-
     }
+
 
     public static void inicioAppiumDriver() {
         try {
