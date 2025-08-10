@@ -138,7 +138,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Maven Cucumber Reporting Plugin -->
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
@@ -151,16 +150,16 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <jsonFiles>
-                                <jsonFile>target/cucumber-reports/mobile/Cucumber.json</jsonFile>
-                                <jsonFile>target/cucumber-reports/web/Cucumber.json</jsonFile>
-                            </jsonFiles>
+                            <projectName>Proyecto QA</projectName>
                             <outputDirectory>${project.build.directory}/cucumber-reports</outputDirectory>
-                            <projectName>Cucumber Combined Report</projectName>
+                            <jsonFiles>
+                                <param>${project.build.directory}/cucumber-reports/*.json</param>
+                            </jsonFiles>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
 
             <!-- Maven Surefire Plugin -->
             <plugin>
