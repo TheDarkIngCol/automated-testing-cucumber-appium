@@ -165,9 +165,12 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <projectName>Automated Testing</projectName>
-                            <outputDirectory>${project.build.directory}/cucumber-html-reports</outputDirectory>
-                            <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
+                            <jsonFiles>
+                                <param>target/cucumber-reports/mobile/Cucumber.json</param>
+                                <param>target/cucumber-reports/web/Cucumber.json</param>
+                            </jsonFiles>
+                            <outputDirectory>target/cucumber-html-reports</outputDirectory>
+                            <projectName>Automated-testing</projectName>
                         </configuration>
                     </execution>
                 </executions>
