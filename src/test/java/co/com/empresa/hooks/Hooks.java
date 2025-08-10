@@ -11,16 +11,17 @@ import org.openqa.selenium.TakesScreenshot;
 
 public class Hooks extends BasePage {
 
-        @Before
-        public void setUp(Scenario scenario) {
-            if (scenario.getSourceTagNames().contains("@mobile")) {
-                Driver.inicioAppiumDriver();
-            } else {
-                Driver.inicioWebDriverLocal();
-            }
+    @Before
+    public void setUp(Scenario scenario) {
+        if (scenario.getSourceTagNames().contains("@mobile")) {
+            Driver.inicioAppiumDriver();
+        } else {
+            Driver.inicioWebDriver(scenario.getName());
         }
+    }
 
-        @Given("que estoy en la página de login")
+
+    @Given("que estoy en la página de login")
         public void estoyEnLaPaginaDeLogin() {
         }
 

@@ -1,14 +1,28 @@
-# platilla-automated-testing
-appium --allow-cors --base-path /wd/hub
+# Automatización BDD Web y Mobile
 
-{
-"platformName": "Android",
-"deviceName": "Huawei",
-"platformVersion": "11.0",
-"automationName": "UiAutomator2",
-"udid": "L4SDU17927002305",
-"app": "C:\\Users\\iva59\\Documents\\Proyectos_QA\\prueba-proyecto-serenity\\src\\test\\resources\\apps\\mda-2.2.0-25.apk",
-"noReset": true,
-"fullReset": false,
-"autoGrantPermissions": true
-}
+Proyecto de pruebas automatizadas desarrollado con **Java + Cucumber**, implementando pruebas para **Web** con **Selenium** y para **Mobile** con **Appium**.
+
+Está estructurado bajo el patrón **Page Object Model (POM)**, con una separación clara entre plataformas para facilitar mantenimiento y escalabilidad.
+
+---
+
+## Tecnologías y Herramientas
+
+- Java 21+
+- Cucumber (BDD)
+- Selenium WebDriver (Automatización Web)
+- Appium (Automatización Mobile)
+- Maven (Gestión de dependencias y ejecución)
+- JUnit / TestNG (Framework de ejecución de tests)
+- Page Object Model (Diseño y organización de código)
+
+
+## Cómo Ejecutar las Pruebas
+
+### Pruebas Web
+
+1. Configurar el navegador en el archivo de configuración.
+2. Ejecutar con Maven:
+
+
+```mvn clean test```

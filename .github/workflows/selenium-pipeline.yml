@@ -25,7 +25,7 @@ jobs:
         run: mvn clean install -DskipTests
 
       - name: Run Selenium tests on BrowserStack
-        run: mvn test -Dsurefire.suiteXmlFiles=testng.xml -P BrowserStack
+        run: mvn test -P BrowserStack "-Dtest.suite=testng.xml"
 
       - name: Upload TestNG reports
         uses: actions/upload-artifact@v4
