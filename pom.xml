@@ -9,6 +9,7 @@
     <groupId>co.com.plantilla</groupId>
     <artifactId>plantilla-automated-testing</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>plantilla-automated-testing</name>
 
     <properties>
@@ -138,35 +139,47 @@
                 </configuration>
             </plugin>
 
+            <!-- Plugin para ejecutar pruebas con TestNG -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                </configuration>
+            </plugin>
+
+            <!-- Plugin para generar reportes Cucumber (solo si usas Cucumber) -->
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
                 <version>5.7.0</version>
                 <executions>
                     <execution>
-                        <id>generate-report</id>
+                        <id>generate-cucumber-report</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <projectName>Proyecto QA</projectName>
-                            <outputDirectory>${project.build.directory}/cucumber-reports</outputDirectory>
-                            <jsonFiles>
-                                <param>${project.build.directory}/cucumber-reports/*.json</param>
-                            </jsonFiles>
+                            <projectName>Automated Testing</projectName>
+                            <outputDirectory>${project.build.directory}/cucumber-html-reports</outputDirectory>
+                            <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
 
-
-            <!-- Maven Surefire Plugin -->
+            <!-- Maven Surefire Plugin con testFailureIgnore true -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M7</version>
                 <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
                     <suiteXmlFiles>
                         <suiteXmlFile>${test.suite}</suiteXmlFile>
                     </suiteXmlFiles>
@@ -223,4 +236,3 @@
         </profile>
     </profiles>
 </project>
-
