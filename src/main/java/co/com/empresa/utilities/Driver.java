@@ -22,12 +22,13 @@ import static co.com.empresa.utilities.Constants.BROWSERSTACK_URL;
 
 public class Driver extends BasePage {
 
-    public static void inicioWebDriver(Method method) {
-        driver = Driver.createRemoteDriver(method.getName());
+    public static void inicioWebDriver(String scenarioName) {
+        driver = Driver.createRemoteDriver(scenarioName);
         driver.manage().window().maximize();
         driver.get(URL);
         waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
+
 
     public static void inicioWebDriverLocal() {
         ChromeOptions options = new ChromeOptions();

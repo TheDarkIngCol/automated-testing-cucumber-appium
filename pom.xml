@@ -70,7 +70,7 @@
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
             <version>7.22.2</version>
-        <scope>test</scope>
+            <scope>test</scope>
         </dependency>
 
         <!-- JUnit Dependency -->
@@ -138,7 +138,6 @@
                 </configuration>
             </plugin>
 
-
             <!-- Maven Cucumber Reporting Plugin -->
             <plugin>
                 <groupId>net.masterthought</groupId>
@@ -159,11 +158,11 @@
                             <outputDirectory>${project.build.directory}/cucumber-reports</outputDirectory>
                             <projectName>Cucumber Combined Report</projectName>
                         </configuration>
-
                     </execution>
                 </executions>
             </plugin>
 
+            <!-- Maven Surefire Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -173,6 +172,9 @@
                         <suiteXmlFile>${test.suite}</suiteXmlFile>
                     </suiteXmlFiles>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <systemPropertyVariables>
+                        <cucumber.filter.tags>${cucumber.filter.tags}</cucumber.filter.tags>
+                    </systemPropertyVariables>
                     <properties>
                         <property>
                             <name>reporter</name>
@@ -181,7 +183,6 @@
                     </properties>
                 </configuration>
             </plugin>
-
 
             <!-- Xray Maven Plugin -->
             <plugin>
@@ -195,6 +196,7 @@
                 </configuration>
             </plugin>
 
+            <!-- Maven Dependency Plugin -->
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.3.0</version>
@@ -222,3 +224,4 @@
         </profile>
     </profiles>
 </project>
+
