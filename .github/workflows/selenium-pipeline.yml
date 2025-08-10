@@ -27,11 +27,22 @@ jobs:
       - name: Run Selenium tests on BrowserStack
         run: mvn test -P BrowserStack "-Dtest.suite=testng.xml"
 
+      - name: Generate Cucumber HTML report
+        run: mvn net.masterthought:maven-cucumber-reporting:generate \
+          -Dcucumber.jsonFiles=target/cucumber-reports/Cucumber.json \
+          -Dcucumber.outputDirectory=target/cucumber-html-reports
+
       - name: Upload TestNG reports
         uses: actions/upload-artifact@v4
         with:
           name: testng-reports
           path: target/surefire-reports
+
+      - name: Upload Cucumber reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-reports
+          path: target/cucumber-html-reports
 
     env:
       BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
