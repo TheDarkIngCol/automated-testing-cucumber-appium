@@ -31,7 +31,7 @@ jobs:
         run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@web"
 
       - name: Generate Web Cucumber report
-                - run: mvn net.masterthought:maven-cucumber-reporting:5.9.0:generate -DjsonFiles=target/cucumber-reports/web/Cucumber.json -DoutputDirectory=target/cucumber-html-reports/web -DprojectName="Web Tests" -Dskip=true
+        run: mvn net.masterthought:maven-cucumber-reporting:5.9.0:generate -DjsonFiles=target/cucumber-reports/web/Cucumber.json -DoutputDirectory=target/cucumber-html-reports/web -DprojectName="Web Tests" -Dskip=true
 
       - name: Upload Web reports
         uses: actions/upload-artifact@v4
@@ -66,7 +66,7 @@ jobs:
         run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@mobile"
 
       - name: Generate Mobile Cucumber report
-          - run: mvn net.masterthought:maven-cucumber-reporting:5.9.0:generate -DjsonFiles=target/cucumber-reports/mobile/Cucumber.json -DoutputDirectory=target/cucumber-html-reports/mobile -DprojectName="Mobile Tests" -Dskip=true
+        run: mvn net.masterthought:maven-cucumber-reporting:5.9.0:generate -DjsonFiles=target/cucumber-reports/mobile/Cucumber.json -DoutputDirectory=target/cucumber-html-reports/mobile -DprojectName="Mobile Tests" -Dskip=true
 
       - name: Upload Mobile reports
         uses: actions/upload-artifact@v4
