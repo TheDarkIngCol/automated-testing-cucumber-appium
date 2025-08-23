@@ -162,7 +162,7 @@
                                     <projectName>Pruebas Web</projectName>
                                     <outputDirectory>${project.build.directory}/cucumber-html-reports/web</outputDirectory>
                                     <jsonFiles>
-                                        <param>${project.build.directory}/cucumber-reports/web/Cucumber.json</param>
+                                        <jsonFile>${project.build.directory}/cucumber-reports/web/Cucumber.json</jsonFile>
                                     </jsonFiles>
                                 </configuration>
                             </execution>
@@ -191,7 +191,7 @@
                                     <projectName>Pruebas Mobile</projectName>
                                     <outputDirectory>${project.build.directory}/cucumber-html-reports/mobile</outputDirectory>
                                     <jsonFiles>
-                                        <param>${project.build.directory}/cucumber-reports/mobile/Cucumber.json</param>
+                                        <jsonFile>${project.build.directory}/cucumber-reports/mobile/Cucumber.json</jsonFile>
                                     </jsonFiles>
                                 </configuration>
                             </execution>
