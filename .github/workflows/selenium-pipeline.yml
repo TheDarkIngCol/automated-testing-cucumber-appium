@@ -32,6 +32,43 @@ jobs:
       - name: Run tests on BrowserStack
         run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml
 
+      # ✅ Verificar que los JSON de Cucumber existen
+      - name: Check Web JSON report
+        run: |
+          echo "Contenido carpeta Web:"
+          ls -la target/cucumber-reports/web || echo "No existe JSON Web"
+
+      - name: Check Mobile JSON report
+        run: |
+          echo "Contenido carpeta Mobile:"
+          ls -la target/cucumber-reports/mobile || echo "No existe JSON Mobile"
+
+      # ✅ Generar reportes Cucumber solo si existen los JSON
+      - name: Generate Web Cucumber report
+        if: ${{ always() }}
+        run: |
+          if [ -f target/cucumber-reports/web/Cucumber.json ]; then
+            mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
+              -Dcucumber.json=target/cucumber-reports/web/Cucumber.json \
+              -Dcucumber.output.directory=target/cucumber-html-reports/web \
+              -Dproject.name="Web Tests"
+          else
+            echo "No se generó JSON Web, se salta reporte"
+          fi
+
+      - name: Generate Mobile Cucumber report
+        if: ${{ always() }}
+        run: |
+          if [ -f target/cucumber-reports/mobile/Cucumber.json ]; then
+            mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
+              -Dcucumber.json=target/cucumber-reports/mobile/Cucumber.json \
+              -Dcucumber.output.directory=target/cucumber-html-reports/mobile \
+              -Dproject.name="Mobile Tests"
+          else
+            echo "No se generó JSON Mobile, se salta reporte"
+          fi
+
+      # 📂 Subir los reports como artifacts
       - name: Upload Web Cucumber reports
         uses: actions/upload-artifact@v4
         with:
