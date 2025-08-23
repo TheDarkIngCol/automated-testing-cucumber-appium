@@ -30,10 +30,10 @@ jobs:
         run: mvn -B clean install -DskipTests
 
       - name: Run Web tests on BrowserStack
-        run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng-web.xml
+        run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@web"
 
       - name: List Web JSON reports
-        run: ls -la target/cucumber-reports/web/
+        run: ls -la target/cucumber-reports/web/ || echo "No se generaron reportes Web"
 
       - name: Generate Web Cucumber report
         run: |
@@ -52,7 +52,7 @@ jobs:
           name: cucumber-reports-web
           path: |
             target/cucumber-reports/web/Cucumber.json
-            target/cucumber-html-reports/web/web-report.html
+            target/cucumber-html-reports/web/
             target/surefire-reports
 
   mobile-tests:
@@ -78,10 +78,10 @@ jobs:
         run: mvn -B clean install -DskipTests
 
       - name: Run Mobile tests on BrowserStack
-        run: mvn -B verify -P BrowserStack -DsuiteXmlFile=testng.xml
+        run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@mobile"
 
       - name: List Mobile JSON reports
-        run: ls -la target/cucumber-reports/mobile/
+        run: ls -la target/cucumber-reports/mobile/ || echo "No se generaron reportes Mobile"
 
       - name: Generate Mobile Cucumber report
         run: |
@@ -100,5 +100,5 @@ jobs:
           name: cucumber-reports-mobile
           path: |
             target/cucumber-reports/mobile/Cucumber.json
-            target/cucumber-html-reports/mobile/mobile-report.html
+            target/cucumber-html-reports/mobile/
             target/surefire-reports
