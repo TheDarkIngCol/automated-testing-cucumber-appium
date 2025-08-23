@@ -17,16 +17,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Java 17
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          java-version: 17
-          distribution: temurin
+          java-version: '17'
+          distribution: 'temurin'
           cache: maven
 
-      - name: Run Web tests
+      - name: Run Web tests and generate report
         run: |
-          mvn -B verify -PBrowserStack,web -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@web"
+          mvn -B verify -PBrowserStack,web \
+          -Dsurefire.suiteXmlFiles=testng-web.xml \
+          -Dcucumber.filter.tags="@web"
 
       - name: Upload Web reports
         uses: actions/upload-artifact@v4
@@ -34,12 +36,12 @@ jobs:
           name: cucumber-reports-web
           path: |
             target/cucumber-reports/web/Cucumber.json
-            target/cucumber-html-reports/web
+            target/cucumber-html-reports/web/
             target/surefire-reports
 
   mobile-tests:
     runs-on: ubuntu-latest
-    needs: []  # corre en paralelo
+    needs: [] # corre en paralelo
     env:
       BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
       BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
@@ -47,16 +49,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Java 17
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          java-version: 17
-          distribution: temurin
+          java-version: '17'
+          distribution: 'temurin'
           cache: maven
 
-      - name: Run Mobile tests
+      - name: Run Mobile tests and generate report
         run: |
-          mvn -B verify -PBrowserStack,mobile -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@mobile"
+          mvn -B verify -PBrowserStack,mobile \
+          -Dsurefire.suiteXmlFiles=testng-mobile.xml \
+          -Dcucumber.filter.tags="@mobile"
 
       - name: Upload Mobile reports
         uses: actions/upload-artifact@v4
@@ -64,5 +68,5 @@ jobs:
           name: cucumber-reports-mobile
           path: |
             target/cucumber-reports/mobile/Cucumber.json
-            target/cucumber-html-reports/mobile
+            target/cucumber-html-reports/mobile/
             target/surefire-reports
