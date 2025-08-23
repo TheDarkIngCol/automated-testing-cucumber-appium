@@ -13,7 +13,6 @@ jobs:
     env:
       BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
       BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,14 +28,17 @@ jobs:
         run: mvn -B clean install -DskipTests
 
       - name: Run Web tests on BrowserStack
-        run: mvn -B test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@web"
+        run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@web"
 
-      - name: Generate Web Cucumber report (via Maven profile)
+      - name: Generate Web Cucumber report if JSON exists
         run: |
           if [ -f target/cucumber-reports/web/Cucumber.json ]; then
-            mvn -B verify -Pweb
+            mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
+              -DjsonFiles=target/cucumber-reports/web/Cucumber.json \
+              -DoutputDirectory=target/cucumber-html-reports/web \
+              -DprojectName="Web Tests"
           else
-            echo "❌ No se generó JSON Web, se omite el reporte"
+            echo "No se generó JSON Web, se salta reporte"
           fi
 
       - name: Upload Web reports
@@ -54,7 +56,6 @@ jobs:
     env:
       BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
       BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -70,14 +71,17 @@ jobs:
         run: mvn -B clean install -DskipTests
 
       - name: Run Mobile tests on BrowserStack
-        run: mvn -B test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@mobile"
+        run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@mobile"
 
-      - name: Generate Mobile Cucumber report (via Maven profile)
+      - name: Generate Mobile Cucumber report if JSON exists
         run: |
           if [ -f target/cucumber-reports/mobile/Cucumber.json ]; then
-            mvn -B verify -Pmobile
+            mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
+              -DjsonFiles=target/cucumber-reports/mobile/Cucumber.json \
+              -DoutputDirectory=target/cucumber-html-reports/mobile \
+              -DprojectName="Mobile Tests"
           else
-            echo "❌ No se generó JSON Mobile, se omite el reporte"
+            echo "No se generó JSON Mobile, se salta reporte"
           fi
 
       - name: Upload Mobile reports
