@@ -2,10 +2,7 @@ package co.com.empresa.pages.mobile;
 
 import co.com.empresa.utilities.BasePage;
 import co.com.empresa.utilities.CommonElements;
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.nativekey.AndroidKey;
-import io.appium.java_client.android.nativekey.KeyEvent;
-import org.testng.Assert;
+import junit.framework.Assert;
 
 import static co.com.empresa.utilities.Constants.TITLE_PRODUCTS;
 

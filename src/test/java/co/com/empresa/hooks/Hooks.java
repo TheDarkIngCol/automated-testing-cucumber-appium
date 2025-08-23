@@ -20,7 +20,6 @@ public class Hooks extends BasePage {
         }
     }
 
-
     @Given("que estoy en la página de login")
     public void estoyEnLaPaginaDeLogin() {
     }

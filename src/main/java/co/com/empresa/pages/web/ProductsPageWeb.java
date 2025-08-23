@@ -2,7 +2,8 @@ package co.com.empresa.pages.web;
 
 import co.com.empresa.utilities.BasePage;
 import co.com.empresa.utilities.CommonElements;
-import org.testng.Assert;
+import junit.framework.Assert;
+
 import static co.com.empresa.utilities.Constants.TITLE_PRODUCTS;
 
 public class ProductsPageWeb extends BasePage {

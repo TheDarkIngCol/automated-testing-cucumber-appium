@@ -18,6 +18,7 @@ Está estructurado bajo el patrón **Page Object Model (POM)**, con una separaci
 
 
 ## Cómo Ejecutar las Pruebas
+- appium --base-path /wd/hub --allow-cors
 
 ### Pruebas Web
 

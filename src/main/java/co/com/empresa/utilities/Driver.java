@@ -80,7 +80,7 @@ public class Driver extends BasePage {
     }
 
 
-    public static void inicioAppiumDriver() {
+    public static void inicioAppiumDriverlocal() {
         try {
             String apkPath = System.getProperty("user.dir") + "/src/test/java/resources/apps/mda-2.2.0-25.apk";
             File apkFile = new File(apkPath);
@@ -97,7 +97,7 @@ public class Driver extends BasePage {
                     .setDeviceName("Huawei")
                     .setUdid("L4SDU17927002305")
                     .setAutomationName("UiAutomator2")
-                    .setApp(apkPath)
+                    .setApp("apkPath")
                     .setNoReset(false)
                     .setFullReset(true)
                     .autoGrantPermissions();
@@ -112,6 +112,26 @@ public class Driver extends BasePage {
         }
     }
 
+    public static void inicioAppiumDriver() {
+        try {
+            UiAutomator2Options options = new UiAutomator2Options()
+                    .setPlatformName("Android")
+                    .setPlatformVersion("11.0")
+                    .setDeviceName("Galaxy S25")
+                    .setAutomationName("UiAutomator2")
+                    .setApp("bs://62f8fbe1955d3ecea2cd41c405e9214d858c62a1")
+                    .setFullReset(true)
+                    .autoGrantPermissions();
+
+            System.out.println("Capabilities: " + options.asMap());
+
+            driver = new AndroidDriver(new URL(BROWSERSTACK_URL), options);
+            waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
+            System.out.println("Driver BrowserStack iniciado correctamente");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public static void cerrarWebDriver() {
