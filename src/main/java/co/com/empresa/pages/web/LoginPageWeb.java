@@ -1,7 +1,7 @@
 package co.com.empresa.pages.web;
 
 import co.com.empresa.utilities.BasePage;
-import org.testng.Assert;
+import junit.framework.Assert;
 
 import static co.com.empresa.utilities.Constants.*;
 

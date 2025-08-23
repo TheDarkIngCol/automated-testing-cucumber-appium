@@ -11,21 +11,21 @@ import org.openqa.selenium.TakesScreenshot;
 
 public class Hooks extends BasePage {
 
-        @Before
-        public void setUp(Scenario scenario) {
-            if (scenario.getSourceTagNames().contains("@mobile")) {
-                Driver.inicioAppiumDriver();
-            } else {
-                Driver.inicioWebDriverLocal();
-            }
+    @Before
+    public void setUp(Scenario scenario) {
+        if (scenario.getSourceTagNames().contains("@mobile")) {
+            Driver.inicioAppiumDriver(true);
+        } else {
+            Driver.inicioWebDriver(scenario.getName());
         }
+    }
 
-        @Given("que estoy en la página de login")
-        public void estoyEnLaPaginaDeLogin() {
-        }
+    @Given("que estoy en la página de login")
+    public void estoyEnLaPaginaDeLogin() {
+    }
 
-        @After
-        public void tearDown(Scenario scenario) {
+    @After
+    public void tearDown(Scenario scenario) {
         if (!scenario.isFailed())
         {
             final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);

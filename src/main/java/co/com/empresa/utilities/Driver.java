@@ -10,20 +10,24 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import io.appium.java_client.android.AndroidDriver;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
-import java.net.URL;
+
 import static co.com.empresa.utilities.Constants.URL;
-import static co.com.empresa.utilities.Constants.BROWSERSTACK_URL;
 
 public class Driver extends BasePage {
 
-    public static void inicioWebDriver(Method method) {
-        driver = Driver.createRemoteDriver(method.getName());
+    public static final String BROWSERSTACK_USER = System.getenv("BROWSERSTACK_USER");
+    public static final String BROWSERSTACK_KEY = System.getenv("BROWSERSTACK_KEY");
+    public static final String BROWSERSTACK_URL = "https://" + BROWSERSTACK_USER + ":" + BROWSERSTACK_KEY + "@hub-cloud.browserstack.com/wd/hub";
+
+    // ---------------------- WEB ----------------------
+    public static void inicioWebDriver(String sessionName) {
+        driver = createRemoteWebDriver(sessionName);
         driver.manage().window().maximize();
         driver.get(URL);
         waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
@@ -39,64 +43,74 @@ public class Driver extends BasePage {
         waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
-    public static RemoteWebDriver createRemoteDriver(final String sessionName) {
+    private static RemoteWebDriver createRemoteWebDriver(String sessionName) {
         if (sessionName == null || sessionName.trim().isEmpty()) {
             throw new IllegalArgumentException("Session name must not be null or empty.");
         }
 
-        MutableCapabilities capabilities = new MutableCapabilities();
         HashMap<String, Object> bstackOptions = new HashMap<>();
         bstackOptions.put("sessionName", sessionName);
+        bstackOptions.put("projectName", "Testing");
+        bstackOptions.put("buildName", "Prueba_ValDispositivos");
+        bstackOptions.put("local", "false");
+        bstackOptions.put("seleniumVersion", "4.8.0");
+
+        MutableCapabilities capabilities = new MutableCapabilities();
         capabilities.setCapability("bstack:options", bstackOptions);
+        capabilities.setCapability("browserName", "Chrome");
+        capabilities.setCapability("browserVersion", "latest");
+
+        HashMap<String, Object> chromeOptions = new HashMap<>();
+        chromeOptions.put("args", new String[]{"--incognito"});
+        capabilities.setCapability("goog:chromeOptions", chromeOptions);
 
         try {
             RemoteWebDriver driver = new RemoteWebDriver(new URI(BROWSERSTACK_URL).toURL(), capabilities);
             DriverManager.setDriver(driver);
             return driver;
-        } catch (URISyntaxException e) {
-            String msg = "La URL de BrowserStack tiene un formato incorrecto (URI): " + BROWSERSTACK_URL;
-            throw new IllegalArgumentException(msg, e);
-        } catch (MalformedURLException e) {
-            String msg = "La URL de BrowserStack tiene un formato inválido (URL): " + BROWSERSTACK_URL;
-            throw new IllegalArgumentException(msg, e);
+        } catch (URISyntaxException | MalformedURLException e) {
+            throw new IllegalArgumentException("Error al conectar con BrowserStack: " + BROWSERSTACK_URL, e);
         }
-
     }
 
-    public static void inicioAppiumDriver() {
+    // ---------------------- MOBILE ----------------------
+    public static void inicioAppiumDriver(boolean useBrowserStack) {
         try {
-            String apkPath = System.getProperty("user.dir") + "/src/test/java/resources/apps/mda-2.2.0-25.apk";
-            File apkFile = new File(apkPath);
-            System.out.println("APK Path: " + apkPath);
-            System.out.println("APK exists: " + apkFile.exists());
-
-            if (!apkFile.exists()) {
-                throw new RuntimeException("APK no encontrado en la ruta especificada");
-            }
-
             UiAutomator2Options options = new UiAutomator2Options()
                     .setPlatformName("Android")
-                    .setPlatformVersion("11.0")
-                    .setDeviceName("Huawei")
-                    .setUdid("L4SDU17927002305")
+                    .setPlatformVersion("12.0")
                     .setAutomationName("UiAutomator2")
-                    .setApp(apkPath)
-                    .setNoReset(false)
                     .setFullReset(true)
                     .autoGrantPermissions();
 
+            if (useBrowserStack) {
+                options.setDeviceName("Samsung Galaxy S22 Ultra")
+                        .setApp("bs://62f8fbe1955d3ecea2cd41c405e9214d858c62a1");
+                driver = new AndroidDriver(new URL(BROWSERSTACK_URL), options);
+                System.out.println("Driver Mobile BrowserStack iniciado correctamente");
+            } else {
+                String apkPath = System.getProperty("user.dir") + "/src/test/java/resources/apps/mda-2.2.0-25.apk";
+                File apkFile = new File(apkPath);
+                if (!apkFile.exists()) {
+                    throw new RuntimeException("APK no encontrado en la ruta: " + apkPath);
+                }
+                options.setDeviceName("Huawei")
+                        .setUdid("L4SDU17927002305")
+                        .setApp(apkPath)
+                        .setNoReset(false);
+                driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), options);
+                System.out.println("Driver Mobile local iniciado correctamente");
+            }
+
+            waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
             System.out.println("Capabilities: " + options.asMap());
 
-            driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), options);
-            waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
-            System.out.println("Driver iniciado correctamente");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
-
+    // ---------------------- CIERRE ----------------------
     public static void cerrarWebDriver() {
         if (driver != null) {
             driver.quit();
