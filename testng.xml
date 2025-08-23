@@ -1,13 +1,14 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="Suite" parallel="false" thread-count="1">
-    <test name="TC_Login Mobile">
+    <test name="Mobile Tests">
         <classes>
             <class name="co.com.empresa.runners.MobileTestRunner"/>
         </classes>
     </test>
-    <test name="TC_Login Web">
+    <test name="Web Tests">
         <classes>
             <class name="co.com.empresa.runners.WebTestRunner"/>
         </classes>
     </test>
 </suite>
+
