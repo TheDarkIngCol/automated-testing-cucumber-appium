@@ -10,11 +10,9 @@ on:
 jobs:
   web-tests:
     runs-on: ubuntu-latest
-
     env:
       BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
       BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -37,9 +35,10 @@ jobs:
 
       - name: Generate Web Cucumber report
         run: |
-          if [ -f target/cucumber-reports/web/Cucumber.json ]; then
+          JSON_FILE="target/cucumber-reports/web/Cucumber.json"
+          if [ -f $JSON_FILE ]; then
             mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
-              -DjsonFiles=target/cucumber-reports/web/Cucumber.json \
+              -DjsonFiles=$JSON_FILE \
               -DoutputDirectory=target/cucumber-html-reports/web \
               -DprojectName="Web Tests"
           else
@@ -57,12 +56,9 @@ jobs:
 
   mobile-tests:
     runs-on: ubuntu-latest
-    needs: [] # corre en paralelo
-
     env:
       BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
       BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -85,9 +81,10 @@ jobs:
 
       - name: Generate Mobile Cucumber report
         run: |
-          if [ -f target/cucumber-reports/mobile/Cucumber.json ]; then
+          JSON_FILE="target/cucumber-reports/mobile/Cucumber.json"
+          if [ -f $JSON_FILE ]; then
             mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
-              -DjsonFiles=target/cucumber-reports/mobile/Cucumber.json \
+              -DjsonFiles=$JSON_FILE \
               -DoutputDirectory=target/cucumber-html-reports/mobile \
               -DprojectName="Mobile Tests"
           else

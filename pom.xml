@@ -164,7 +164,6 @@
                                     <jsonFiles>
                                         <param>${project.build.directory}/cucumber-reports/web/Cucumber.json</param>
                                     </jsonFiles>
-                                    <skip>${!project.build.directory}/cucumber-reports/web/Cucumber.json</skip>
                                 </configuration>
                             </execution>
                         </executions>
@@ -194,7 +193,6 @@
                                     <jsonFiles>
                                         <param>${project.build.directory}/cucumber-reports/mobile/Cucumber.json</param>
                                     </jsonFiles>
-                                    <skip>${!project.build.directory}/cucumber-reports/mobile/Cucumber.json</skip>
                                 </configuration>
                             </execution>
                         </executions>
