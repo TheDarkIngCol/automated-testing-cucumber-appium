@@ -39,9 +39,9 @@ jobs:
         run: |
           if [ -f target/cucumber-reports/web/Cucumber.json ]; then
             mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
-              -Dcucumber.json=target/cucumber-reports/web/Cucumber.json \
-              -Dcucumber.output.directory=target/cucumber-html-reports/web \
-              -Dproject.name="Web Tests"
+              -DjsonFiles=target/cucumber-reports/web/Cucumber.json \
+              -DoutputDirectory=target/cucumber-html-reports/web \
+              -DprojectName="Web Tests"
           else
             echo "No se generó JSON Web, se salta reporte"
           fi
@@ -87,9 +87,9 @@ jobs:
         run: |
           if [ -f target/cucumber-reports/mobile/Cucumber.json ]; then
             mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
-              -Dcucumber.json=target/cucumber-reports/mobile/Cucumber.json \
-              -Dcucumber.output.directory=target/cucumber-html-reports/mobile \
-              -Dproject.name="Mobile Tests"
+              -DjsonFiles=target/cucumber-reports/mobile/Cucumber.json \
+              -DoutputDirectory=target/cucumber-html-reports/mobile \
+              -DprojectName="Mobile Tests"
           else
             echo "No se generó JSON Mobile, se salta reporte"
           fi
