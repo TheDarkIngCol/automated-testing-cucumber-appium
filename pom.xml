@@ -26,7 +26,6 @@
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-remote-driver</artifactId>
@@ -116,47 +115,15 @@
                     <includes>
                         <include>**/*TestRunner.java</include>
                     </includes>
+                    <testFailureIgnore>false</testFailureIgnore>
                 </configuration>
             </plugin>
 
-
-            <!-- Reportes Cucumber Web/Mobile -->
+            <!-- Reportes Cucumber -->
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
                 <version>5.7.4</version>
-                <executions>
-                    <execution>
-                        <id>generate-mobile-report</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <projectName>Pruebas Mobile</projectName>
-                            <outputDirectory>${project.build.directory}/cucumber-html-reports/mobile</outputDirectory>
-                            <jsonFiles>
-                                <param>${project.build.directory}/cucumber-reports/mobile/Cucumber.json</param>
-                            </jsonFiles>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>generate-web-report</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <projectName>Pruebas Web</projectName>
-                            <outputDirectory>${project.build.directory}/cucumber-html-reports/web</outputDirectory>
-                            <jsonFiles>
-                                <param>${project.build.directory}/cucumber-reports/web/Cucumber.json</param>
-                            </jsonFiles>
-                        </configuration>
-                    </execution>
-
-                </executions>
             </plugin>
 
             <!-- Xray Maven Plugin -->
@@ -170,10 +137,71 @@
                     <reportFile>target/surefire-reports/testng-results.xml</reportFile>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
     <profiles>
+
+        <!-- Perfil Web -->
+        <profile>
+            <id>web</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>net.masterthought</groupId>
+                        <artifactId>maven-cucumber-reporting</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-web-report</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <projectName>Pruebas Web</projectName>
+                                    <outputDirectory>${project.build.directory}/cucumber-html-reports/web</outputDirectory>
+                                    <jsonFiles>
+                                        <param>${project.build.directory}/cucumber-reports/web/Cucumber.json</param>
+                                    </jsonFiles>
+                                    <skip>${!project.build.directory}/cucumber-reports/web/Cucumber.json</skip>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Perfil Mobile -->
+        <profile>
+            <id>mobile</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>net.masterthought</groupId>
+                        <artifactId>maven-cucumber-reporting</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-mobile-report</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <projectName>Pruebas Mobile</projectName>
+                                    <outputDirectory>${project.build.directory}/cucumber-html-reports/mobile</outputDirectory>
+                                    <jsonFiles>
+                                        <param>${project.build.directory}/cucumber-reports/mobile/Cucumber.json</param>
+                                    </jsonFiles>
+                                    <skip>${!project.build.directory}/cucumber-reports/mobile/Cucumber.json</skip>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>BrowserStack</id>
             <activation>

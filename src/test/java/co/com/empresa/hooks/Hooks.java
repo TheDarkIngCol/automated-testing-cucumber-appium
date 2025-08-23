@@ -14,7 +14,7 @@ public class Hooks extends BasePage {
     @Before
     public void setUp(Scenario scenario) {
         if (scenario.getSourceTagNames().contains("@mobile")) {
-            Driver.inicioAppiumDriver();
+            Driver.inicioAppiumDriver(true);
         } else {
             Driver.inicioWebDriver(scenario.getName());
         }
