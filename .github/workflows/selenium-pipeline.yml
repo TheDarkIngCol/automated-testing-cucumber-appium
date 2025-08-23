@@ -22,26 +22,14 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Install Cucumber HTML Reporter
-        run: npm install cucumber-html-reporter
-
       - name: Run Web Tests
         run: mvn test -Pweb -Dsurefire.suiteXmlFiles=testng-web.xml -Dcucumber.filter.tags="@web"
 
       - name: Generate Web HTML Report
-        run: |
-          mkdir -p target/cucumber-html-reports/web
-          npx cucumber-html-reporter generate \
-            --theme bootstrap \
-            --json target/cucumber-reports/web/Cucumber.json \
-            --output target/cucumber-html-reports/web/index.html \
-            --reportSuiteAsScenarios true \
-            --scenarioTimestamp true
+        uses: cucumber/report-action@v1
+        with:
+          json: target/cucumber-reports/web/Cucumber.json
+          output: target/cucumber-html-reports/web/index.html
 
       - name: Upload Web Reports
         uses: actions/upload-artifact@v4
@@ -66,26 +54,14 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Install Cucumber HTML Reporter
-        run: npm install cucumber-html-reporter
-
       - name: Run Mobile Tests
         run: mvn test -Pmobile -Dsurefire.suiteXmlFiles=testng-mobile.xml -Dcucumber.filter.tags="@mobile"
 
       - name: Generate Mobile HTML Report
-        run: |
-          mkdir -p target/cucumber-html-reports/mobile
-          npx cucumber-html-reporter generate \
-            --theme bootstrap \
-            --json target/cucumber-reports/mobile/Cucumber.json \
-            --output target/cucumber-html-reports/mobile/index.html \
-            --reportSuiteAsScenarios true \
-            --scenarioTimestamp true
+        uses: cucumber/report-action@v1
+        with:
+          json: target/cucumber-reports/mobile/Cucumber.json
+          output: target/cucumber-html-reports/mobile/index.html
 
       - name: Upload Mobile Reports
         uses: actions/upload-artifact@v4
