@@ -20,8 +20,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: Run Web Tests
-        run: mvn test -Pweb -Dsurefire.suiteXmlFiles=testng-web.xml -Dcucumber.filter.tags="@web"
+      - name: Run Web Tests and Generate HTML
+        run: mvn clean verify -Pweb -Dsurefire.suiteXmlFiles=testng-web.xml -Dcucumber.filter.tags="@web"
       - name: Upload Web Reports
         uses: actions/upload-artifact@v4
         with:
@@ -43,8 +43,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: Run Mobile Tests
-        run: mvn test -Pmobile -Dsurefire.suiteXmlFiles=testng-mobile.xml -Dcucumber.filter.tags="@mobile"
+      - name: Run Mobile Tests and Generate HTML
+        run: mvn clean verify -Pmobile -Dsurefire.suiteXmlFiles=testng-mobile.xml -Dcucumber.filter.tags="@mobile"
       - name: Upload Mobile Reports
         uses: actions/upload-artifact@v4
         with:
