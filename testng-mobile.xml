@@ -5,10 +5,5 @@
             <class name="co.com.empresa.runners.MobileTestRunner"/>
         </classes>
     </test>
-    <test name="Web Tests">
-        <classes>
-            <class name="co.com.empresa.runners.WebTestRunner"/>
-        </classes>
-    </test>
 </suite>
 

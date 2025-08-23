@@ -119,13 +119,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Reportes Cucumber -->
-            <plugin>
-                <groupId>net.masterthought</groupId>
-                <artifactId>maven-cucumber-reporting</artifactId>
-                <version>5.9.0</version>
-            </plugin>
-
             <!-- Xray Maven Plugin -->
             <plugin>
                 <groupId>app.getxray</groupId>
@@ -151,6 +144,7 @@
                     <plugin>
                         <groupId>net.masterthought</groupId>
                         <artifactId>maven-cucumber-reporting</artifactId>
+                        <version>5.9.0</version>
                         <executions>
                             <execution>
                                 <id>generate-web-report</id>
@@ -159,11 +153,11 @@
                                     <goal>generate</goal>
                                 </goals>
                                 <configuration>
-                                    <projectName>Pruebas Web</projectName>
-                                    <outputDirectory>${project.build.directory}/cucumber-html-reports/web</outputDirectory>
+                                    <projectName>Proyecto Automation - Web</projectName>
                                     <jsonFiles>
-                                        <jsonFile>${project.build.directory}/cucumber-reports/web/Cucumber.json</jsonFile>
+                                        <param>target/cucumber-reports/web/Cucumber.json</param>
                                     </jsonFiles>
+                                    <outputDirectory>target/cucumber-html-reports/web</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
@@ -180,6 +174,7 @@
                     <plugin>
                         <groupId>net.masterthought</groupId>
                         <artifactId>maven-cucumber-reporting</artifactId>
+                        <version>5.9.0</version>
                         <executions>
                             <execution>
                                 <id>generate-mobile-report</id>
@@ -188,11 +183,11 @@
                                     <goal>generate</goal>
                                 </goals>
                                 <configuration>
-                                    <projectName>Pruebas Mobile</projectName>
-                                    <outputDirectory>${project.build.directory}/cucumber-html-reports/mobile</outputDirectory>
+                                    <projectName>Proyecto Automation - Mobile</projectName>
                                     <jsonFiles>
-                                        <jsonFile>${project.build.directory}/cucumber-reports/mobile/Cucumber.json</jsonFile>
+                                        <param>target/cucumber-reports/mobile/Cucumber.json</param>
                                     </jsonFiles>
+                                    <outputDirectory>target/cucumber-html-reports/mobile</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
@@ -200,14 +195,14 @@
                 </plugins>
             </build>
         </profile>
+
+        <!-- Perfil BrowserStack -->
         <profile>
             <id>BrowserStack</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
-                <test.suite>testng.xml</test.suite>
             </properties>
         </profile>
+
+
     </profiles>
 </project>
