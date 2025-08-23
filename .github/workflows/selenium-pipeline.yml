@@ -13,6 +13,7 @@ jobs:
     env:
       BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
       BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -30,15 +31,11 @@ jobs:
       - name: Run Web tests on BrowserStack
         run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@web"
 
-      - name: List Web JSON reports
-        run: ls -la target/cucumber-reports/web/ || echo "No se generaron reportes Web"
-
       - name: Generate Web Cucumber report
         run: |
-          JSON_FILE="target/cucumber-reports/web/Cucumber.json"
-          if [ -f $JSON_FILE ]; then
+          if [ -f target/cucumber-reports/web/Cucumber.json ]; then
             mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
-              -DjsonFiles=$JSON_FILE \
+              -DjsonFiles=target/cucumber-reports/web/Cucumber.json \
               -DoutputDirectory=target/cucumber-html-reports/web \
               -DprojectName="Web Tests"
           else
@@ -56,9 +53,11 @@ jobs:
 
   mobile-tests:
     runs-on: ubuntu-latest
+    needs: [] # corre en paralelo
     env:
       BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
       BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -76,15 +75,11 @@ jobs:
       - name: Run Mobile tests on BrowserStack
         run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@mobile"
 
-      - name: List Mobile JSON reports
-        run: ls -la target/cucumber-reports/mobile/ || echo "No se generaron reportes Mobile"
-
       - name: Generate Mobile Cucumber report
         run: |
-          JSON_FILE="target/cucumber-reports/mobile/Cucumber.json"
-          if [ -f $JSON_FILE ]; then
+          if [ -f target/cucumber-reports/mobile/Cucumber.json ]; then
             mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
-              -DjsonFiles=$JSON_FILE \
+              -DjsonFiles=target/cucumber-reports/mobile/Cucumber.json \
               -DoutputDirectory=target/cucumber-html-reports/mobile \
               -DprojectName="Mobile Tests"
           else
