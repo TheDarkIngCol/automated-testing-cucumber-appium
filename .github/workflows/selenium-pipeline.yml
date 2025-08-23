@@ -29,17 +29,14 @@ jobs:
         run: mvn -B clean install -DskipTests
 
       - name: Run Web tests on BrowserStack
-        run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@web"
+        run: mvn -B test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@web"
 
-      - name: Generate Web Cucumber report
+      - name: Generate Web Cucumber report (via Maven profile)
         run: |
           if [ -f target/cucumber-reports/web/Cucumber.json ]; then
-            mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
-              -DjsonFiles=target/cucumber-reports/web/Cucumber.json \
-              -DoutputDirectory=target/cucumber-html-reports/web \
-              -DprojectName="Web Tests"
+            mvn -B verify -Pweb
           else
-            echo "No se generó JSON Web, se salta reporte"
+            echo "❌ No se generó JSON Web, se omite el reporte"
           fi
 
       - name: Upload Web reports
@@ -73,17 +70,14 @@ jobs:
         run: mvn -B clean install -DskipTests
 
       - name: Run Mobile tests on BrowserStack
-        run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@mobile"
+        run: mvn -B test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@mobile"
 
-      - name: Generate Mobile Cucumber report
+      - name: Generate Mobile Cucumber report (via Maven profile)
         run: |
           if [ -f target/cucumber-reports/mobile/Cucumber.json ]; then
-            mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
-              -DjsonFiles=target/cucumber-reports/mobile/Cucumber.json \
-              -DoutputDirectory=target/cucumber-html-reports/mobile \
-              -DprojectName="Mobile Tests"
+            mvn -B verify -Pmobile
           else
-            echo "No se generó JSON Mobile, se salta reporte"
+            echo "❌ No se generó JSON Mobile, se omite el reporte"
           fi
 
       - name: Upload Mobile reports
