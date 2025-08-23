@@ -78,7 +78,7 @@ jobs:
         run: mvn -B clean install -DskipTests
 
       - name: Run Mobile tests on BrowserStack
-        run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng-mobile.xml
+        run: mvn -B verify -P BrowserStack -DsuiteXmlFile=testng.xml
 
       - name: List Mobile JSON reports
         run: ls -la target/cucumber-reports/mobile/
