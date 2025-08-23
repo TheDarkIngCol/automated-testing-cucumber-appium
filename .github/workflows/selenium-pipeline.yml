@@ -27,32 +27,28 @@ jobs:
       - name: Build project (skip tests)
         run: mvn -B clean install -DskipTests
 
-      - name: Run Web tests on BrowserStack
+      - name: Run Web tests
         run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@web"
 
-      - name: Generate Web Cucumber report if JSON exists
-        run: |
-          if [ -f target/cucumber-reports/web/Cucumber.json ]; then
-            mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
-              -DjsonFiles=target/cucumber-reports/web/Cucumber.json \
-              -DoutputDirectory=target/cucumber-html-reports/web \
-              -DprojectName="Web Tests"
-          else
-            echo "No se generó JSON Web, se salta reporte"
-          fi
+      - name: Generate Web Cucumber report
+        run: mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
+          -DjsonFiles=target/cucumber-reports/web/Cucumber.json \
+          -DoutputDirectory=target/cucumber-html-reports/web \
+          -DprojectName="Web Tests" \
+          -Dskip=true
 
       - name: Upload Web reports
         uses: actions/upload-artifact@v4
         with:
           name: cucumber-reports-web
           path: |
-            target/cucumber-reports/web/Cucumber.json
+            target/cucumber-reports/web/
             target/cucumber-html-reports/web/
-            target/surefire-reports
+            target/surefire-reports/
 
   mobile-tests:
     runs-on: ubuntu-latest
-    needs: [] # corre en paralelo
+    needs: []
     env:
       BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
       BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
@@ -70,25 +66,21 @@ jobs:
       - name: Build project (skip tests)
         run: mvn -B clean install -DskipTests
 
-      - name: Run Mobile tests on BrowserStack
+      - name: Run Mobile tests
         run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng.xml -Dcucumber.filter.tags="@mobile"
 
-      - name: Generate Mobile Cucumber report if JSON exists
-        run: |
-          if [ -f target/cucumber-reports/mobile/Cucumber.json ]; then
-            mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
-              -DjsonFiles=target/cucumber-reports/mobile/Cucumber.json \
-              -DoutputDirectory=target/cucumber-html-reports/mobile \
-              -DprojectName="Mobile Tests"
-          else
-            echo "No se generó JSON Mobile, se salta reporte"
-          fi
+      - name: Generate Mobile Cucumber report
+        run: mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
+          -DjsonFiles=target/cucumber-reports/mobile/Cucumber.json \
+          -DoutputDirectory=target/cucumber-html-reports/mobile \
+          -DprojectName="Mobile Tests" \
+          -Dskip=true
 
       - name: Upload Mobile reports
         uses: actions/upload-artifact@v4
         with:
           name: cucumber-reports-mobile
           path: |
-            target/cucumber-reports/mobile/Cucumber.json
+            target/cucumber-reports/mobile/
             target/cucumber-html-reports/mobile/
-            target/surefire-reports
+            target/surefire-reports/
