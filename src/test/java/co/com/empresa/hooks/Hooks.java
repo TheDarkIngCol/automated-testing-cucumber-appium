@@ -13,12 +13,10 @@ public class Hooks extends BasePage {
 
     @Before
     public void setUp(Scenario scenario) {
-        if (scenario.getSourceTagNames().contains("@mobile")) {
-            Driver.inicioAppiumDriver(true);
-        } else {
-            Driver.inicioWebDriver(scenario.getName());
-        }
+        Driver.inicioWebDriver(scenario.getName());
+        Driver.inicioAppiumDriver(true, scenario.getName());
     }
+
 
     @Given("que estoy en la página de login")
     public void estoyEnLaPaginaDeLogin() {
