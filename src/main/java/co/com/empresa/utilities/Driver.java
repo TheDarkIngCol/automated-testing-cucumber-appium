@@ -8,7 +8,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import io.appium.java_client.android.AndroidDriver;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -25,7 +24,6 @@ public class Driver extends BasePage {
     public static final String BROWSERSTACK_KEY = System.getenv("BROWSERSTACK_KEY");
     public static final String BROWSERSTACK_URL = "https://" + BROWSERSTACK_USER + ":" + BROWSERSTACK_KEY + "@hub-cloud.browserstack.com/wd/hub";
 
-    // ---------------------- WEB ----------------------
     public static void inicioWebDriver(String sessionName) {
         driver = createRemoteWebDriver(sessionName);
         driver.manage().window().maximize();
@@ -73,7 +71,6 @@ public class Driver extends BasePage {
         }
     }
 
-    // ---------------------- MOBILE ----------------------
     public static void inicioAppiumDriver(boolean useBrowserStack) {
         try {
             UiAutomator2Options options = new UiAutomator2Options()
@@ -110,7 +107,6 @@ public class Driver extends BasePage {
         }
     }
 
-    // ---------------------- CIERRE ----------------------
     public static void cerrarWebDriver() {
         if (driver != null) {
             driver.quit();

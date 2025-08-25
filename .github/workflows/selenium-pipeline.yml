@@ -10,95 +10,45 @@ on:
 jobs:
   web-tests:
     runs-on: ubuntu-latest
-
     env:
       BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
       BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-
-      - name: Build project (skip tests)
-        run: mvn -B clean install -DskipTests
-
-      - name: Run Web tests on BrowserStack
-        run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng-web.xml
-
-      - name: List Web JSON reports
-        run: ls -la target/cucumber-reports/web/
-
-      - name: Generate Web Cucumber report
-        run: |
-          if [ -f target/cucumber-reports/web/Cucumber.json ]; then
-            mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
-              -DjsonFiles=target/cucumber-reports/web/Cucumber.json \
-              -DoutputDirectory=target/cucumber-html-reports/web \
-              -DprojectName="Web Tests"
-          else
-            echo "No se generó JSON Web, se salta reporte"
-          fi
-
-      - name: Upload Web reports
+      - name: Run Web Tests
+        run: mvn test -Pweb -Dsurefire.suiteXmlFiles=testng-web.xml -Dcucumber.filter.tags="@web"
+      - name: Upload Web Reports
         uses: actions/upload-artifact@v4
         with:
           name: cucumber-reports-web
           path: |
             target/cucumber-reports/web/Cucumber.json
-            target/cucumber-html-reports/web/web-report.html
-            target/surefire-reports
+            target/cucumber-html-reports/web/
 
   mobile-tests:
     runs-on: ubuntu-latest
-    needs: [] # corre en paralelo
-
+    needs: []
     env:
       BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
       BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-
-      - name: Build project (skip tests)
-        run: mvn -B clean install -DskipTests
-
-      - name: Run Mobile tests on BrowserStack
-        run: mvn -B clean test -P BrowserStack -Dsurefire.suiteXmlFiles=testng-mobile.xml
-
-      - name: List Mobile JSON reports
-        run: ls -la target/cucumber-reports/mobile/
-
-      - name: Generate Mobile Cucumber report
-        run: |
-          if [ -f target/cucumber-reports/mobile/Cucumber.json ]; then
-            mvn net.masterthought:maven-cucumber-reporting:5.7.4:generate \
-              -DjsonFiles=target/cucumber-reports/mobile/Cucumber.json \
-              -DoutputDirectory=target/cucumber-html-reports/mobile \
-              -DprojectName="Mobile Tests"
-          else
-            echo "No se generó JSON Mobile, se salta reporte"
-          fi
-
-      - name: Upload Mobile reports
+      - name: Run Mobile Tests
+        run: mvn test -Pmobile -Dsurefire.suiteXmlFiles=testng-mobile.xml -Dcucumber.filter.tags="@mobile"
+      - name: Upload Mobile Reports
         uses: actions/upload-artifact@v4
         with:
           name: cucumber-reports-mobile
           path: |
             target/cucumber-reports/mobile/Cucumber.json
-            target/cucumber-html-reports/mobile/mobile-report.html
-            target/surefire-reports
+            target/cucumber-html-reports/mobile/
