@@ -1,13 +1,14 @@
 package co.com.empresa.utilities;
 
 import io.appium.java_client.android.options.UiAutomator2Options;
+import io.appium.java_client.android.AndroidDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import io.appium.java_client.android.AndroidDriver;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -24,18 +25,18 @@ public class Driver extends BasePage {
     public static final String BROWSERSTACK_KEY = System.getenv("BROWSERSTACK_KEY");
     public static final String BROWSERSTACK_URL = "https://" + BROWSERSTACK_USER + ":" + BROWSERSTACK_KEY + "@hub-cloud.browserstack.com/wd/hub";
 
-    public static void inicioWebDriver(String sessionName) {
-        driver = createRemoteWebDriver(sessionName);
-        driver.manage().window().maximize();
-        driver.get(URL);
-        waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
-    }
+    public static void inicioWebDriver(String sessionName, boolean useBrowserStack) {
+        if (useBrowserStack) {
+            driver = createRemoteWebDriver(sessionName);
+            System.out.println("Driver Web BrowserStack iniciado correctamente");
+        } else {
+            WebDriverManager.chromedriver().setup();
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("start-maximized", "--disable-notifications", "--incognito", "--disable-popup-blocking");
+            driver = new ChromeDriver(options);
+            System.out.println("Driver Web local iniciado correctamente");
+        }
 
-    public static void inicioWebDriverLocal() {
-        ChromeOptions options = new ChromeOptions();
-        WebDriverManager.chromedriver().setup();
-        options.addArguments("start-maximized", "--disable-notifications", "--incognito", "--disable-popup-blocking");
-        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.get(URL);
         waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
@@ -104,6 +105,7 @@ public class Driver extends BasePage {
 
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Error al iniciar Appium Driver: " + e.getMessage(), e);
         }
     }
 
