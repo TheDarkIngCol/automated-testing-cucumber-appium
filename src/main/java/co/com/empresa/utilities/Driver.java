@@ -1,6 +1,5 @@
 package co.com.empresa.utilities;
 
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.MutableCapabilities;
@@ -8,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import io.appium.java_client.android.AndroidDriver;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -26,35 +25,21 @@ public class Driver extends BasePage {
     public static final String BROWSERSTACK_URL =
             "https://" + BROWSERSTACK_USER + ":" + BROWSERSTACK_KEY + "@hub-cloud.browserstack.com/wd/hub";
 
-    /**
-     * Inicia WebDriver local o remoto (BrowserStack) con nombre de sesión.
-     */
-    public static void inicioWebDriver(boolean useRemote, String sessionName) {
-        try {
-            if (useRemote) {
-                driver = createRemoteWebDriver(sessionName);
-                System.out.println("Driver Web remoto iniciado correctamente");
-            } else {
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions options = new ChromeOptions();
-                options.addArguments(
-                        "start-maximized",
-                        "--disable-notifications",
-                        "--incognito",
-                        "--disable-popup-blocking"
-                );
-                driver = new ChromeDriver(options);
-                System.out.println("Driver Web local iniciado correctamente");
-            }
+    public static void inicioWebDriver(String sessionName) {
+        driver = createRemoteWebDriver(sessionName);
+        driver.manage().window().maximize();
+        driver.get(URL);
+        waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
+    }
 
-            driver.manage().window().maximize();
-            driver.get(URL);
-            waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error al iniciar el WebDriver: " + e.getMessage(), e);
-        }
+    public static void inicioWebDriverLocal() {
+        ChromeOptions options = new ChromeOptions();
+        WebDriverManager.chromedriver().setup();
+        options.addArguments("start-maximized", "--disable-notifications", "--incognito", "--disable-popup-blocking");
+        driver = new ChromeDriver(options);
+        driver.manage().window().maximize();
+        driver.get(URL);
+        waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
     private static RemoteWebDriver createRemoteWebDriver(String sessionName) {
@@ -63,9 +48,9 @@ public class Driver extends BasePage {
         }
 
         HashMap<String, Object> bstackOptions = new HashMap<>();
-        bstackOptions.put("sessionName", sessionName);  // 🔹 nombre visible en BrowserStack
-        bstackOptions.put("projectName", "Testing Web");
-        bstackOptions.put("buildName", "Prueba_Web");
+        bstackOptions.put("sessionName", sessionName);
+        bstackOptions.put("projectName", "Testing");
+        bstackOptions.put("buildName", "Prueba_ValDispositivos");
         bstackOptions.put("local", "false");
         bstackOptions.put("seleniumVersion", "4.8.0");
 
@@ -87,9 +72,6 @@ public class Driver extends BasePage {
         }
     }
 
-    /**
-     * Inicia AppiumDriver en BrowserStack o local, con metadatos de sesión.
-     */
     public static void inicioAppiumDriver(boolean useBrowserStack, String sessionName) {
         try {
             UiAutomator2Options options = new UiAutomator2Options()
@@ -104,11 +86,10 @@ public class Driver extends BasePage {
                     throw new IllegalArgumentException("Session name must not be null or empty.");
                 }
 
-                // 🔹 Capabilities adicionales para BrowserStack
                 HashMap<String, Object> bstackOptions = new HashMap<>();
                 bstackOptions.put("sessionName", sessionName);
-                bstackOptions.put("projectName", "Testing Mobile");
-                bstackOptions.put("buildName", "Prueba_Mobile");
+                bstackOptions.put("projectName", "Testing");
+                bstackOptions.put("buildName", "Prueba_ValDispositivos");
                 bstackOptions.put("deviceName", "Samsung Galaxy S22 Ultra");
                 bstackOptions.put("app", "bs://62f8fbe1955d3ecea2cd41c405e9214d858c62a1");
 
@@ -127,7 +108,6 @@ public class Driver extends BasePage {
                         .setUdid("L4SDU17927002305")
                         .setApp(apkPath)
                         .setNoReset(false);
-
                 driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), options);
                 System.out.println("Driver Mobile local iniciado correctamente");
             }
@@ -137,7 +117,6 @@ public class Driver extends BasePage {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Error al iniciar AppiumDriver: " + e.getMessage(), e);
         }
     }
 

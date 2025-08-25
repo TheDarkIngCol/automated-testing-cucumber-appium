@@ -13,7 +13,7 @@ public class Hooks extends BasePage {
 
     @Before
     public void setUp(Scenario scenario) {
-        Driver.inicioWebDriver(true, scenario.getName());
+        Driver.inicioWebDriver(scenario.getName());
         Driver.inicioAppiumDriver(true, scenario.getName());
     }
 
