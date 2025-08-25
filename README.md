@@ -3,7 +3,7 @@
 Proyecto de pruebas automatizadas desarrollado con **Java + Cucumber**, implementando pruebas para **Web con Selenium** y **Mobile con Appium**.  
 El diseño sigue el patrón **Page Object Model (POM)**, con separación clara de plataformas para facilitar mantenimiento y escalabilidad. 
 ---
-Desarrollado por: **Jorge Ivan Torres Florez | QA Automation**
+Desarrollado por: **Jorge Ivan Torres Florez | QA Automation Engineer | SDET**
 
 ---
 
