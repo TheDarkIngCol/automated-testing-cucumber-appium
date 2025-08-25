@@ -159,7 +159,6 @@
                                     </jsonFiles>
                                     <outputDirectory>target/cucumber-html-reports/web</outputDirectory>
                                     <skip>false</skip>
-                                    <missingJsonFilesBehavior>ignore</missingJsonFilesBehavior>
                                 </configuration>
                             </execution>
                         </executions>
@@ -191,7 +190,6 @@
                                     </jsonFiles>
                                     <outputDirectory>target/cucumber-html-reports/mobile</outputDirectory>
                                     <skip>false</skip>
-                                    <missingJsonFilesBehavior>ignore</missingJsonFilesBehavior>
                                 </configuration>
                             </execution>
                         </executions>
