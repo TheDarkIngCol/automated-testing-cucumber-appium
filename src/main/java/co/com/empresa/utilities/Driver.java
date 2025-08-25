@@ -1,7 +1,7 @@
 package co.com.empresa.utilities;
 
-import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.options.UiAutomator2Options;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -9,13 +9,17 @@ import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static co.com.empresa.utilities.Constants.URL;
 
@@ -36,7 +40,6 @@ public class Driver extends BasePage {
             driver = new ChromeDriver(options);
             System.out.println("Driver Web local iniciado correctamente");
         }
-
         driver.manage().window().maximize();
         driver.get(URL);
         waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
@@ -72,42 +75,125 @@ public class Driver extends BasePage {
         }
     }
 
-    public static void inicioAppiumDriver(boolean useBrowserStack) {
+    public static void inicioAppiumDriver(boolean useBrowserStack, String deviceName, String appPath, int deviceIndex) {
         try {
             UiAutomator2Options options = new UiAutomator2Options()
                     .setPlatformName("Android")
-                    .setPlatformVersion("12.0")
                     .setAutomationName("UiAutomator2")
-                    .setFullReset(true)
+                    .setApp(appPath)
                     .autoGrantPermissions();
 
             if (useBrowserStack) {
-                options.setDeviceName("Samsung Galaxy S22 Ultra")
-                        .setApp("bs://62f8fbe1955d3ecea2cd41c405e9214d858c62a1");
+                if (deviceName == null || deviceName.isEmpty() || appPath == null || appPath.isEmpty()) {
+                    throw new IllegalArgumentException("Para BrowserStack debe especificar deviceName y appPath");
+                }
+                options.setDeviceName(deviceName)
+                        .setPlatformVersion("12.0")
+                        .setApp(appPath)
+                        .setFullReset(true);
                 driver = new AndroidDriver(new URL(BROWSERSTACK_URL), options);
                 System.out.println("Driver Mobile BrowserStack iniciado correctamente");
             } else {
-                String apkPath = System.getProperty("user.dir") + "/src/test/java/resources/apps/mda-2.2.0-25.apk";
-                File apkFile = new File(apkPath);
-                if (!apkFile.exists()) {
-                    throw new RuntimeException("APK no encontrado en la ruta: " + apkPath);
+                List<DeviceInfo> devices = getConnectedDevices();
+                if (devices.isEmpty()) {
+                    throw new RuntimeException("No se encontró ningún dispositivo Android conectado");
                 }
-                options.setDeviceName("Huawei")
-                        .setUdid("L4SDU17927002305")
-                        .setApp(apkPath)
+
+                if (deviceIndex >= devices.size()) {
+                    throw new IllegalArgumentException("deviceIndex fuera de rango, dispositivos conectados: " + devices.size());
+                }
+
+                DeviceInfo device = devices.get(deviceIndex);
+                File apkFile = new File(appPath);
+                if (!apkFile.exists()) {
+                    throw new RuntimeException("APK no encontrado en la ruta: " + appPath);
+                }
+
+                options.setDeviceName(device.model)
+                        .setPlatformVersion(device.androidVersion)
+                        .setUdid(device.udid)
+                        .setApp(appPath)
                         .setNoReset(false);
+
                 driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), options);
-                System.out.println("Driver Mobile local iniciado correctamente");
+                System.out.println("Driver Mobile local iniciado correctamente: " + device);
             }
 
             waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
-            System.out.println("Capabilities: " + options.asMap());
 
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error al iniciar Appium Driver: " + e.getMessage(), e);
         }
     }
+
+    private static List<DeviceInfo> getConnectedDevices() {
+        List<DeviceInfo> devices = new ArrayList<>();
+        try {
+            Process process = Runtime.getRuntime().exec("adb devices");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.endsWith("\tdevice")) {
+                    String udid = line.split("\t")[0];
+                    devices.add(getDeviceInfo(udid));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return devices;
+    }
+
+    private static DeviceInfo getDeviceInfo(String udid) {
+        DeviceInfo info = new DeviceInfo();
+        info.udid = udid;
+        try {
+            info.model = execADBCommand(udid, "getprop ro.product.model");
+            info.brand = execADBCommand(udid, "getprop ro.product.brand");
+            info.androidVersion = execADBCommand(udid, "getprop ro.build.version.release");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return info;
+    }
+
+    private static String execADBCommand(String udid, String command) throws Exception {
+        Process process = Runtime.getRuntime().exec("adb -s " + udid + " shell " + command);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String output = reader.readLine();
+        reader.close();
+        return output != null ? output.trim() : "";
+    }
+
+    private static class DeviceInfo {
+        String udid;
+        String model;
+        String brand;
+        String androidVersion;
+
+        @Override
+        public String toString() {
+            return brand + " " + model + " (Android " + androidVersion + ") UDID: " + udid;
+        }
+    }
+
+    public static AndroidDriver getDriver() {
+        if (driver instanceof AndroidDriver) {
+            return (AndroidDriver) driver;
+        } else {
+            throw new IllegalStateException("El driver actual no es un AndroidDriver");
+        }
+    }
+
+    public static RemoteWebDriver getWebDriver() {
+        if (driver instanceof RemoteWebDriver) {
+            return (RemoteWebDriver) driver;
+        } else {
+            throw new IllegalStateException("El driver actual no es un RemoteWebDriver");
+        }
+    }
+
 
     public static void cerrarWebDriver() {
         if (driver != null) {
