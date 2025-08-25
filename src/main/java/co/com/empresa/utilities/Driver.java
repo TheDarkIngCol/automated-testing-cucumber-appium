@@ -22,8 +22,7 @@ public class Driver extends BasePage {
 
     public static final String BROWSERSTACK_USER = System.getenv("BROWSERSTACK_USER");
     public static final String BROWSERSTACK_KEY = System.getenv("BROWSERSTACK_KEY");
-    public static final String BROWSERSTACK_URL =
-            "https://" + BROWSERSTACK_USER + ":" + BROWSERSTACK_KEY + "@hub-cloud.browserstack.com/wd/hub";
+    public static final String BROWSERSTACK_URL = "https://" + BROWSERSTACK_USER + ":" + BROWSERSTACK_KEY + "@hub-cloud.browserstack.com/wd/hub";
 
     public static void inicioWebDriver(String sessionName) {
         driver = createRemoteWebDriver(sessionName);
@@ -72,7 +71,7 @@ public class Driver extends BasePage {
         }
     }
 
-    public static void inicioAppiumDriver(boolean useBrowserStack, String sessionName) {
+    public static void inicioAppiumDriver(boolean useBrowserStack) {
         try {
             UiAutomator2Options options = new UiAutomator2Options()
                     .setPlatformName("Android")
@@ -82,22 +81,10 @@ public class Driver extends BasePage {
                     .autoGrantPermissions();
 
             if (useBrowserStack) {
-                if (sessionName == null || sessionName.trim().isEmpty()) {
-                    throw new IllegalArgumentException("Session name must not be null or empty.");
-                }
-
-                HashMap<String, Object> bstackOptions = new HashMap<>();
-                bstackOptions.put("sessionName", sessionName);
-                bstackOptions.put("projectName", "Testing");
-                bstackOptions.put("buildName", "Prueba_ValDispositivos");
-                bstackOptions.put("deviceName", "Samsung Galaxy S22 Ultra");
-                bstackOptions.put("app", "bs://62f8fbe1955d3ecea2cd41c405e9214d858c62a1");
-
-                options.setCapability("bstack:options", bstackOptions);
-
+                options.setDeviceName("Samsung Galaxy S22 Ultra")
+                        .setApp("bs://62f8fbe1955d3ecea2cd41c405e9214d858c62a1");
                 driver = new AndroidDriver(new URL(BROWSERSTACK_URL), options);
                 System.out.println("Driver Mobile BrowserStack iniciado correctamente");
-
             } else {
                 String apkPath = System.getProperty("user.dir") + "/src/test/java/resources/apps/mda-2.2.0-25.apk";
                 File apkFile = new File(apkPath);
