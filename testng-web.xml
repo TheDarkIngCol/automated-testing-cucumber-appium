@@ -1,9 +1,8 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-<suite name="Suite" parallel="false" thread-count="1">
+<suite name="Web Suite" parallel="false">
     <test name="Web Tests">
         <classes>
             <class name="co.com.empresa.runners.WebTestRunner"/>
         </classes>
     </test>
 </suite>
-
