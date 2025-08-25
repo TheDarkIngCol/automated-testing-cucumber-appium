@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - staging
   workflow_dispatch:
 
 jobs:
@@ -21,7 +20,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Run Web Tests
-        run: mvn test -Pweb -Dsurefire.suiteXmlFiles=testng-web.xml -Dcucumber.filter.tags="@web"
+        run: mvn test -Pweb -Dsurefire.suiteXmlFiles=testng-web.xml -Dcucumber.filter.tags="@web" -Dbrowserstack=true
       - name: Upload Web Reports
         uses: actions/upload-artifact@v4
         with:
@@ -44,7 +43,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Run Mobile Tests
-        run: mvn test -Pmobile -Dsurefire.suiteXmlFiles=testng-mobile.xml -Dcucumber.filter.tags="@mobile"
+        run: mvn test -Pmobile -Dsurefire.suiteXmlFiles=testng-mobile.xml -Dcucumber.filter.tags="@mobile" -Dbrowserstack=true
       - name: Upload Mobile Reports
         uses: actions/upload-artifact@v4
         with:

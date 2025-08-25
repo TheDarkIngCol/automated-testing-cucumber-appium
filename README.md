@@ -1,29 +1,57 @@
-# Automatización BDD Web y Mobile
+# 🚀 Automatización BDD Web y Mobile
 
-Proyecto de pruebas automatizadas desarrollado con **Java + Cucumber**, implementando pruebas para **Web** con **Selenium** y para **Mobile** con **Appium**.
-
-Está estructurado bajo el patrón **Page Object Model (POM)**, con una separación clara entre plataformas para facilitar mantenimiento y escalabilidad.
+Proyecto de pruebas automatizadas desarrollado con **Java + Cucumber**, implementando pruebas para **Web con Selenium** y **Mobile con Appium**.  
+El diseño sigue el patrón **Page Object Model (POM)**, con separación clara de plataformas para facilitar mantenimiento y escalabilidad. 
+---
+Desarrollado por: **Jorge Ivan Torres Florez | QA Automation Engineer | SDET**
 
 ---
 
-## Tecnologías y Herramientas
+## 🧰 Tecnologías y Herramientas
 
-- Java 21+
-- Cucumber (BDD)
-- Selenium WebDriver (Automatización Web)
-- Appium (Automatización Mobile)
-- Maven (Gestión de dependencias y ejecución)
-- JUnit / TestNG (Framework de ejecución de tests)
-- Page Object Model (Diseño y organización de código)
+- **Lenguaje:** Java 21+
+- **BDD:** Cucumber
+- **Automatización Web:** Selenium WebDriver
+- **Automatización Mobile:** Appium
+- **Gestión de dependencias:** Maven
+- **Framework de ejecución:** JUnit / TestNG
+- **Diseño de código:** Page Object Model (POM)
+- **Ejecución remota:** BrowserStack
 
+---
 
-## Cómo Ejecutar las Pruebas
-- appium --base-path /wd/hub --allow-cors
+## ⚙️ Configuración Inicial
+### 🔧 Appium Local
+Antes de ejecutar pruebas mobile, asegúrate de que Appium esté corriendo:
 
-### Pruebas Web
+    appium --base-path /wd/hub --allow-cors
 
-1. Configurar el navegador en el archivo de configuración.
-2. Ejecutar con Maven:
+---
 
+## ☁️ BrowserStack
+Configura tus credenciales en variables de entorno:
 
-```mvn clean test```
+- **BROWSERSTACK_USER:** <TU_USUARIO>
+- **BROWSERSTACK_KEY:** <TU_KEY>
+
+---
+
+## ▶️ Cómo Ejecutar las Pruebas
+### 🌐 Pruebas Web Local
+```mvn clean test -DsuiteXmlFile=testng-web.xml```
+
+### 🌐 Pruebas Web en BrowserStack
+```mvn clean test -DsuiteXmlFile=testng-web.xml -Dbrowserstack=true```
+
+### 📱 Pruebas Mobile Local
+```mvn clean test -DsuiteXmlFile=testng-mobile.xml```
+
+### 📱 Pruebas Mobile en BrowserStack
+```mvn clean test -DsuiteXmlFile=testng-mobile.xml -Dbrowserstack=true```
+
+## 📚 Reportes Generados
+### WEB
+- **target/cucumber-html-reports/web/web-report.html**
+
+### Mobile
+- **target/cucumber-html-reports/mobile/mobile-report.html**
