@@ -13,13 +13,11 @@ public class Hooks extends BasePage {
 
     @Before
     public void setUp(Scenario scenario) {
-        boolean useBrowserStack = Boolean.parseBoolean(System.getProperty("browserstack", "false"));
-
         if (scenario.getSourceTagNames().contains("@mobile")) {
-            Driver.inicioAppiumDriver(useBrowserStack);
+            Driver.inicioAppiumDriver();
         } else {
             String sessionName = scenario.getName();
-            Driver.inicioWebDriver(sessionName, useBrowserStack);
+            Driver.inicioWebDriver(sessionName); // idem
         }
     }
 
