@@ -1,4 +1,4 @@
-package co.com.empresa.runners;
+package co.com.empresa.runners.web;
 
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;

@@ -25,6 +25,7 @@ Desarrollado por: **Jorge Ivan Torres Florez | QA Automation Engineer | SDET**
 Antes de ejecutar pruebas mobile, asegúrate de que Appium esté corriendo:
 
     appium --base-path /wd/hub --allow-cors
+    emulator -avd Medium_Phone_API_36.0
 
 ---
 
@@ -43,10 +44,10 @@ Configura tus credenciales en variables de entorno:
 ### 🌐 Pruebas Web en BrowserStack
 ```mvn clean test -DsuiteXmlFile=testng-web.xml -Dbrowserstack=true```
 
-### 📱 Pruebas Mobile Local
+### 🤖 + 🍎 Pruebas Mobile Local (Android + iOS)
 ```mvn clean test -DsuiteXmlFile=testng-mobile.xml```
 
-### 📱 Pruebas Mobile en BrowserStack
+### 🤖 + 🍎 Pruebas Mobile en BrowserStack (Android + iOS)
 ```mvn clean test -DsuiteXmlFile=testng-mobile.xml -Dbrowserstack=true```
 
 ## 📚 Reportes Generados
@@ -54,4 +55,5 @@ Configura tus credenciales en variables de entorno:
 - **target/cucumber-html-reports/web/web-report.html**
 
 ### Mobile
-- **target/cucumber-html-reports/mobile/mobile-report.html**
+- **target/cucumber-html-reports/mobile/android/android-report.html**
+- **target/cucumber-html-reports/mobile/iOS/iOS-report.html**

@@ -1,8 +1,15 @@
-<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="Mobile Suite" parallel="false">
-    <test name="Mobile Tests">
+
+    <test name="Android Tests">
         <classes>
-            <class name="co.com.empresa.runners.MobileTestRunner"/>
+            <class name="co.com.empresa.runners.mobile.android.MobileTestRunner"/>
         </classes>
     </test>
+
+    <test name="iOS Tests">
+        <classes>
+            <class name="co.com.empresa.runners.mobile.ios.MobileTestRunnerIOS"/>
+        </classes>
+    </test>
+
 </suite>
