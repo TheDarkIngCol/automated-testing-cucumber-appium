@@ -13,13 +13,23 @@ public class Hooks extends BasePage {
 
     @Before
     public void setUp(Scenario scenario) {
-        if (scenario.getSourceTagNames().contains("@mobile")) {
-            Driver.inicioAppiumDriver();
+        String nombreEscenario = scenario.getName();
+
+        if (scenario.getSourceTagNames().contains("@android")) {
+            Driver.inicioDriver("android", nombreEscenario);
+            System.out.println("📱 Escenario Android iniciado: " + nombreEscenario);
+        } else if (scenario.getSourceTagNames().contains("@ios")) {
+            Driver.inicioDriver("ios", nombreEscenario);
+            System.out.println("🍏 Escenario iOS iniciado: " + nombreEscenario);
+        } else if (scenario.getSourceTagNames().contains("@web")) {
+            Driver.inicioDriver("web", nombreEscenario);
+            System.out.println("💻 Escenario Web iniciado: " + nombreEscenario);
         } else {
-            String sessionName = scenario.getName();
-            Driver.inicioWebDriver(sessionName); // idem
+            Driver.inicioDriver("web", nombreEscenario);
+            System.out.println("💻 Escenario Web iniciado (por defecto): " + nombreEscenario);
         }
     }
+
 
     @Given("que estoy en la página de login")
     public void estoyEnLaPaginaDeLogin() {
@@ -27,17 +37,13 @@ public class Hooks extends BasePage {
 
     @After
     public void tearDown(Scenario scenario) {
-        if (!scenario.isFailed())
-        {
+        try {
             final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot, "image/png", scenario.getName());
-            Driver.cerrarWebDriver();
+        } catch (Exception e) {
+            System.out.println("No se pudo tomar screenshot: " + e.getMessage());
         }
-        else if (scenario.isFailed())
-        {
-            final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            scenario.attach(screenshot, "image/png", scenario.getName());
-            Driver.cerrarWebDriver();
-        }
+        Driver.cerrarDriver();
     }
+
 }
