@@ -2,7 +2,7 @@
 <suite name="Web Suite" parallel="false">
     <test name="Web Tests">
         <classes>
-            <class name="co.com.empresa.runners.WebTestRunner"/>
+            <class name="co.com.empresa.runners.web.WebTestRunner"/>
         </classes>
     </test>
 </suite>

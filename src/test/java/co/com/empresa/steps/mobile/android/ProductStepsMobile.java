@@ -1,10 +1,8 @@
-package co.com.empresa.steps.mobile;
+package co.com.empresa.steps.mobile.android;
 
-import co.com.empresa.pages.mobile.ProductsPageMobile;
-import co.com.empresa.pages.web.ProductsPageWeb;
+import co.com.empresa.pages.mobile.android.ProductsPageMobile;
 import co.com.empresa.utilities.BasePage;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
