@@ -28,7 +28,7 @@ public class Driver extends BasePage {
         return Boolean.parseBoolean(System.getProperty("browserstack", "false"));
     }
 
-    /** Método unificado para inicializar cualquier driver */
+    /** Método para inicializar cualquier driver */
     public static void inicioDriver(String plataforma, String nombreEscenario) {
         switch (plataforma.toLowerCase()) {
             case "web":
@@ -108,9 +108,9 @@ public class Driver extends BasePage {
                 DeviceInfo device = obtenerPrimerDispositivoConectadoAndroid();
                 if (device == null) throw new RuntimeException("No se encontró ningún dispositivo Android conectado.");
 
-                options.setUdid("emulator-5554")
-                        .setDeviceName("Medium_Phone_API_36.0")
-                        .setPlatformVersion("14.0")
+                options.setUdid(device.udid)
+                        .setDeviceName(device.model)
+                        .setPlatformVersion(device.version)
                         .setApp("/Users/JORGITO/Documents/JORGE/plantilla-automated-testing-cucumber/src/test/java/resources/apps/mda-2.2.0-25.apk")
                         .setAppPackage("com.saucelabs.mydemoapp.android")
                         .setAppActivity("com.saucelabs.mydemoapp.android.view.activities.SplashActivity")
