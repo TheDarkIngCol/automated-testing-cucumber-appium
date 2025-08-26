@@ -10,7 +10,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.io.*;
 import java.net.URI;
 import java.net.URL;
@@ -121,7 +120,7 @@ public class Driver extends BasePage {
                 System.out.println("Driver Android local iniciado correctamente en dispositivo: " + device);
             }
 
-            waitDriver = new WebDriverWait(driver, Duration.ofSeconds(30));
+            waitDriver = new WebDriverWait(driver, Duration.ofSeconds(60));
             System.out.println("Capabilities: " + options.asMap());
 
         } catch (Exception e) {
