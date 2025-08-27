@@ -44,11 +44,17 @@ Configura tus credenciales en variables de entorno:
 ### 🌐 Pruebas Web en BrowserStack
 ```mvn clean test -DsuiteXmlFile=testng-web.xml -Dbrowserstack=true```
 
-### 🤖 + 🍎 Pruebas Mobile Local (Android + iOS)
+### 🤖 Pruebas Mobile Local Android
 ```mvn clean test -DsuiteXmlFile=testng-mobile.xml```
 
-### 🤖 + 🍎 Pruebas Mobile en BrowserStack (Android + iOS)
+### 🤖 Pruebas Mobile en BrowserStack Android
 ```mvn clean test -DsuiteXmlFile=testng-mobile.xml -Dbrowserstack=true```
+
+### 🍎 Pruebas Mobile Local iOS
+```mvn clean test -DsuiteXmlFile=testng-mobile-iOS.xml```
+
+### 🍎 Pruebas Mobile en BrowserStack iOS
+```mvn clean test -DsuiteXmlFile=testng-mobile-iOS.xml -Dbrowserstack=true```
 
 ## 📚 Reportes Generados
 ### WEB

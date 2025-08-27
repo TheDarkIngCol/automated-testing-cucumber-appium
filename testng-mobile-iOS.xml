@@ -1,0 +1,7 @@
+<suite name="Mobile Suite" parallel="false">
+    <test name="iOS Tests">
+        <classes>
+            <class name="co.com.empresa.runners.mobile.ios.MobileTestRunnerIOS"/>
+        </classes>
+    </test>
+</suite>
