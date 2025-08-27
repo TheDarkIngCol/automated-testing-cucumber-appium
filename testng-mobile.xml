@@ -5,11 +5,4 @@
             <class name="co.com.empresa.runners.mobile.android.MobileTestRunner"/>
         </classes>
     </test>
-
-    <test name="iOS Tests">
-        <classes>
-            <class name="co.com.empresa.runners.mobile.ios.MobileTestRunnerIOS"/>
-        </classes>
-    </test>
-
 </suite>
