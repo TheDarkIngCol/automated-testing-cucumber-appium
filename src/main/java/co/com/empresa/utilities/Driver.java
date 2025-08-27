@@ -108,10 +108,12 @@ public class Driver extends BasePage {
                 DeviceInfo device = obtenerPrimerDispositivoConectadoAndroid();
                 if (device == null) throw new RuntimeException("No se encontró ningún dispositivo Android conectado.");
 
+                String PATH = System.getProperty("user.dir") + System.getenv("PATH_APK");
+
                 options.setUdid(device.udid)
                         .setDeviceName(device.model)
                         .setPlatformVersion(device.version)
-                        .setApp("/Users/JORGITO/Documents/JORGE/plantilla-automated-testing-cucumber/src/test/java/resources/apps/mda-2.2.0-25.apk")
+                        .setApp(PATH)
                         .setAppPackage("com.saucelabs.mydemoapp.android")
                         .setAppActivity("com.saucelabs.mydemoapp.android.view.activities.SplashActivity")
                         .setNoReset(false);
