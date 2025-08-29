@@ -28,7 +28,7 @@ public class Driver extends BasePage {
         return Boolean.parseBoolean(System.getProperty("browserstack", "false"));
     }
 
-    /** Método para inicializar cualquier driver */
+    /** Metodo para inicializar cualquier driver */
     public static void inicioDriver(String plataforma, String nombreEscenario) {
         switch (plataforma.toLowerCase()) {
             case "web":
@@ -94,8 +94,8 @@ public class Driver extends BasePage {
         try {
             UiAutomator2Options options = new UiAutomator2Options()
                     .setPlatformName("Android")
-                    .setAutomationName("UiAutomator2")
-                    .autoGrantPermissions();
+                    .setAutomationName("UiAutomator2"); // solo para warning
+            options.setCapability("ignoreHiddenApiPolicyError", true);
 
             if (isBrowserStack()) {
                 options.setDeviceName("Samsung Galaxy S23 Ultra")
@@ -106,17 +106,20 @@ public class Driver extends BasePage {
                 System.out.println("Driver Android BrowserStack iniciado correctamente");
             } else {
                 DeviceInfo device = obtenerPrimerDispositivoConectadoAndroid();
-                if (device == null) throw new RuntimeException("No se encontró ningún dispositivo Android conectado.");
+                if (device == null) {
+                    throw new RuntimeException("No se encontró ningún dispositivo Android conectado.");
+                }
 
-                String PATH = System.getProperty("user.dir") + System.getenv("PATH_APK");
+                String PATH_APK = System.getProperty("user.dir") + System.getenv("PATH_APK");
 
                 options.setUdid(device.udid)
                         .setDeviceName(device.model)
                         .setPlatformVersion(device.version)
-                        .setApp(PATH)
+                        .setApp(PATH_APK)
                         .setAppPackage("com.saucelabs.mydemoapp.android")
-                        .setAppActivity("com.saucelabs.mydemoapp.android.view.activities.SplashActivity")
-                        .setNoReset(false);
+                        .setAppActivity("com.saucelabs.mydemoapp.android.view.activities.SplashActivity");
+                    options.setNoReset(false)
+                            .setFullReset(true);
 
                 driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), options);
                 System.out.println("Driver Android local iniciado correctamente en dispositivo: " + device);
