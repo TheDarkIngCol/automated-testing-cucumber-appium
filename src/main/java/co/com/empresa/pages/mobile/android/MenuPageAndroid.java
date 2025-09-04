@@ -1,6 +1,7 @@
 package co.com.empresa.pages.mobile.android;
 
 import co.com.empresa.utilities.BasePage;
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 public class MenuPageAndroid extends BasePage {
@@ -10,11 +11,12 @@ public class MenuPageAndroid extends BasePage {
     }
 
         By menuIcon = By.id("com.saucelabs.mydemoapp.android:id/menuIV") ;
-        By logginButton = By.xpath("//android.widget.TextView[@content-desc=\"Login Menu Item\"]");
+        By logginButton = MobileBy.AccessibilityId("Login Menu Item");
 
 
     public void menuSuccess() throws InterruptedException {
         clickBy(menuIcon);
+        Thread.sleep(2000);
         clickBy(logginButton);
     }
 }
