@@ -10,9 +10,11 @@ public class MenuPageIOS extends BasePage {
     }
 
         By menuIcon = By.id("More-tab-item") ;
+        By loginButton = By.id("LogOut-menu-item");
 
 
     public void menuSuccessIOS() {
         clickBy(menuIcon);
+        clickBy(loginButton);
     }
 }

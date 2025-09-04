@@ -19,10 +19,11 @@ import java.util.HashMap;
 import static co.com.empresa.utilities.Constants.URL;
 
 public class Driver extends BasePage {
-
     private static final String BROWSERSTACK_USER = System.getenv("BROWSERSTACK_USER");
     private static final String BROWSERSTACK_KEY = System.getenv("BROWSERSTACK_KEY");
     private static final String BROWSERSTACK_URL = "https://" + BROWSERSTACK_USER + ":" + BROWSERSTACK_KEY + "@hub-cloud.browserstack.com/wd/hub";
+    private static final String PATH_APK_ANDROID = "/Users/JORGITO/Documents/JORGE/plantilla-automated-testing-cucumber/src/test/java/resources/apps/mda-2.2.0-25.apk";
+    private static final String PATH_APK_IOS = "/Users/JORGITO/Documents/JORGE/plantilla-automated-testing-cucumber/src/test/java/resources/apps/ios/My Demo App.app";
 
     public static boolean isBrowserStack() {
         return Boolean.parseBoolean(System.getProperty("browserstack", "false"));
@@ -111,12 +112,10 @@ public class Driver extends BasePage {
                     throw new RuntimeException("No se encontró ningún dispositivo Android conectado.");
                 }
 
-                String PATH_APK = System.getProperty("user.dir") + System.getenv("PATH_APK");
-
                 options.setUdid(device.udid)
                         .setDeviceName(device.model)
                         .setPlatformVersion(device.version)
-                        .setApp(PATH_APK)
+                        .setApp(PATH_APK_ANDROID)
                         .setAppPackage("com.saucelabs.mydemoapp.android")
                         .setAppActivity("com.saucelabs.mydemoapp.android.view.activities.SplashActivity");
                     options.setNoReset(false)
@@ -153,7 +152,7 @@ public class Driver extends BasePage {
 
                 options.setDeviceName("iPhone 16")
                         .setPlatformVersion("18.6")
-                        .setApp("/Users/JORGITO/Downloads/My Demo App.app")
+                        .setApp(PATH_APK_IOS)
                         .setNoReset(false);
 
                 driver = new IOSDriver(new URL("http://127.0.0.1:4723/wd/hub"), options);
