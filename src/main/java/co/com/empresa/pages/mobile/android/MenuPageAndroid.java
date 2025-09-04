@@ -13,8 +13,9 @@ public class MenuPageAndroid extends BasePage {
         String logginButton = "//android.widget.TextView[@content-desc=\"Login Menu Item\"]";
 
 
-    public void menuSuccess() {
+    public void menuSuccess() throws InterruptedException {
         clickBy(menuIcon);
+        wait(2000);
         clickAndScroll(logginButton);
     }
 }
