@@ -15,7 +15,7 @@ public class MenuPageAndroid extends BasePage {
 
     public void menuSuccess() throws InterruptedException {
         clickBy(menuIcon);
-        wait(2000);
+        Thread.sleep(2000);
         clickAndScroll(logginButton);
     }
 }
