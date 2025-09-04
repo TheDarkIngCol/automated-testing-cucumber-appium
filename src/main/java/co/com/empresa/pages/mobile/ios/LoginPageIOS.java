@@ -2,22 +2,17 @@ package co.com.empresa.pages.mobile.ios;
 
 import co.com.empresa.utilities.BasePage;
 
-import static co.com.empresa.utilities.Constants.*;
-
 public class LoginPageIOS extends BasePage {
 
     public LoginPageIOS() {
         super();
     }
 
-    private String usernameField = "//android.widget.EditText[@resource-id=\"com.saucelabs.mydemoapp.android:id/nameET\"]";
-    private String passwordField = "//android.widget.EditText[@resource-id=\"com.saucelabs.mydemoapp.android:id/passwordET\"]";
-    private String loginButton = "//android.widget.Button[@content-desc=\"Tap to login with given credentials\"]";
-    private String textFailed = "//android.widget.TextView[@resource-id=\"com.saucelabs.mydemoapp.android:id/passwordErrorTV\"]";
+    private String usernameField = "//XCUIElementTypeStaticText[@name=\"bob@example.com\"]";
+    private String loginButton = "//XCUIElementTypeButton[@name=\"Login\"]";
 
     public void loginSuccessfullMobileIOS() {
-        sendKeys(usernameField, USERNAME);
-        sendKeys(passwordField, PASS);
+        click(usernameField);
         click(loginButton);
     }
 }
