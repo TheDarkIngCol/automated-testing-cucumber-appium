@@ -10,11 +10,11 @@ public class MenuPageAndroid extends BasePage {
     }
 
         By menuIcon = By.id("com.saucelabs.mydemoapp.android:id/menuIV") ;
-        String logginButton = "//android.widget.TextView[@content-desc=\"Login Menu Item\"]";
+        By logginButton = By.xpath("//android.widget.TextView[@content-desc=\"Login Menu Item\"]");
 
 
     public void menuSuccess() throws InterruptedException {
         clickBy(menuIcon);
-        click(logginButton);
+        clickBy(logginButton);
     }
 }
