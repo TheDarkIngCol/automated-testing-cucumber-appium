@@ -12,13 +12,13 @@ public class LoginStepsMobile extends BasePage {
     MenuPageAndroid menuPageAndroid = new MenuPageAndroid();
 
     @When("ingreso usuario y contrasena correctos en mobile")
-    public void ingreso_usuario_y_contrasena() throws InterruptedException {
+    public void ingreso_usuario_y_contrasena() {
         menuPageAndroid.menuSuccess();
         loginPageAndroid.loginSuccessfullMobile();
     }
 
     @When("ingreso usuario y contrasena incorrecto en mobile")
-    public void ingreso_usuario_y_contrasena_incorrecto() throws InterruptedException {
+    public void ingreso_usuario_y_contrasena_incorrecto() {
         menuPageAndroid.menuSuccess();
         loginPageAndroid.loginFailedMobile();
     }
