@@ -81,9 +81,10 @@ public class Driver extends BasePage {
         capabilities.setCapability("goog:chromeOptions", chromeOptions);
 
         try {
-            RemoteWebDriver driver = new RemoteWebDriver(new URI(BROWSERSTACK_URL).toURL(), capabilities);
-            DriverManager.setDriver(driver);
-            return driver;
+            RemoteWebDriver remoteDriver = new RemoteWebDriver(new URI(BROWSERSTACK_URL).toURL(), capabilities);
+            DriverManager.setDriver(remoteDriver);
+            waitDriver = new WebDriverWait(remoteDriver, Duration.ofSeconds(30));
+            return remoteDriver;
         } catch (Exception e) {
             throw new RuntimeException("Error al conectar con BrowserStack: " + BROWSERSTACK_URL, e);
         }
@@ -167,15 +168,6 @@ public class Driver extends BasePage {
         }
     }
 
-    /** Cierra cualquier driver */
-    public static void cerrarDriver() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
-            waitDriver = null;
-        }
-    }
-
     /** Clase interna para guardar info del dispositivo */
     private static class DeviceInfo {
         String udid;
@@ -235,4 +227,16 @@ public class Driver extends BasePage {
             return output.toString();
         } catch (Exception e) { e.printStackTrace(); return ""; }
     }
+
+    /** Cierra cualquier driver */
+    public static void cerrarDriver() {
+        if (driver != null) {
+            driver.quit();
+            driver = null;
+            waitDriver = null;
+        }
+    }
+
 }
+
+

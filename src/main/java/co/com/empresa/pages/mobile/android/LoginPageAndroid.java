@@ -1,13 +1,13 @@
-package co.com.empresa.pages.mobile.ios;
+package co.com.empresa.pages.mobile.android;
 
 import co.com.empresa.utilities.BasePage;
 import junit.framework.Assert;
 
 import static co.com.empresa.utilities.Constants.*;
 
-public class LoginPageMobileIOS extends BasePage {
+public class LoginPageAndroid extends BasePage {
 
-    public LoginPageMobileIOS() {
+    public LoginPageAndroid() {
         super();
     }
 
@@ -16,9 +16,21 @@ public class LoginPageMobileIOS extends BasePage {
     private String loginButton = "//android.widget.Button[@content-desc=\"Tap to login with given credentials\"]";
     private String textFailed = "//android.widget.TextView[@resource-id=\"com.saucelabs.mydemoapp.android:id/passwordErrorTV\"]";
 
-    public void loginSuccessfullMobileIOS() {
+    public void loginSuccessfullMobile() {
         sendKeys(usernameField, USERNAME);
         sendKeys(passwordField, PASS);
         click(loginButton);
+    }
+
+    public void loginFailedMobile() {
+        sendKeys(usernameField, USERNAME_WRONG);
+        sendKeys(passwordField, PASS_WRONG);
+        click(loginButton);
+    }
+
+    public void errorMessage() {
+        String textFail = getText(textFailed);
+        Assert.assertEquals(textFail, TEXT_EXPECTED);
+        System.out.println("El texto encontrado es: " + textFail);
     }
 }
