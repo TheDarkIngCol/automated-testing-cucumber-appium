@@ -10,11 +10,9 @@ public class MenuPageIOS extends BasePage {
     }
 
         By menuIcon = By.id("More-tab-item") ;
-        String logginButton = "//android.widget.TextView[@content-desc=\"Login Menu Item\"]";
 
 
     public void menuSuccessIOS() {
         clickBy(menuIcon);
-        //clickAndScroll(logginButton);
     }
 }
