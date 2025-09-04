@@ -3,9 +3,9 @@ package co.com.empresa.pages.mobile.ios;
 import co.com.empresa.utilities.BasePage;
 import org.openqa.selenium.By;
 
-public class MenuPageMobileIOS extends BasePage {
+public class MenuPageIOS extends BasePage {
 
-    public MenuPageMobileIOS() {
+    public MenuPageIOS() {
         super();
     }
 
