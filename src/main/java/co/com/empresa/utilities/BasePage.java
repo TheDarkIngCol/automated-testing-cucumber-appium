@@ -1,6 +1,7 @@
 package co.com.empresa.utilities;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
@@ -81,6 +82,16 @@ public class BasePage {
         }
     }
 
+    public void sendkeysAndScroll(String locator, String data) {
+        if (driver instanceof AppiumDriver) {
+            scrollToElementMobile(locator);
+            sendKeys(locator, data);
+        } else {
+            scrollToElementWeb(locator);
+            sendKeys(locator, data);
+        }
+    }
+
     private void scrollToElementWeb(String locator) {
         WebElement element = findVisible(locator);
         ((JavascriptExecutor) driver).executeScript(
@@ -89,20 +100,32 @@ public class BasePage {
     }
 
     private void scrollToElementMobile(String locator) {
-        int maxSwipes = 10;
-        for (int i = 0; i < maxSwipes; i++) {
-            try {
-                WebElement el = driver.findElement(By.xpath(locator));
-                if (el.isDisplayed()) {
-                    return;
-                }
-            } catch (Exception e) {
-                swipeVertical(0.8, 0.2);
+        try {
+            WebElement element = ((AppiumDriver) driver).findElement(
+                    MobileBy.AndroidUIAutomator(
+                            "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
+                                    + "new UiSelector().xpath(\"" + locator + "\"));"
+                    )
+            );
+            if (element.isDisplayed()) {
+                return;
+            }
+        } catch (Exception e) {
+            int maxSwipes = 10;
+            for (int i = 0; i < maxSwipes; i++) {
+                try {
+                    WebElement el = driver.findElement(By.xpath(locator));
+                    if (el.isDisplayed()) {
+                        return;
+                    }
+                } catch (Exception ignored) {}
+                swipeVertical(0.7, 0.3); // swipe más natural
                 sleep(700);
             }
+            throw new NoSuchElementException("No se encontró el elemento tras scroll: " + locator);
         }
-        throw new NoSuchElementException("No se encontró el elemento tras hacer scroll: " + locator);
     }
+
 
     public void swipeVertical(double startPercentage, double endPercentage) {
         Dimension size = driver.manage().window().getSize();

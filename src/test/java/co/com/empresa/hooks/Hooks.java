@@ -3,6 +3,7 @@ package co.com.empresa.hooks;
 import co.com.empresa.utilities.BasePage;
 import co.com.empresa.utilities.Driver;
 import io.cucumber.java.After;
+import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
@@ -30,9 +31,21 @@ public class Hooks extends BasePage {
         }
     }
 
+    @AfterStep
+    public void takeScreenshot(Scenario scenario) {
+        try {
+            final byte[] screenshot = ((TakesScreenshot) BasePage.driver)
+                    .getScreenshotAs(OutputType.BYTES);
+            scenario.attach(screenshot, "image/png", "Step Screenshot");
+        } catch (Exception e) {
+            System.out.println("⚠️ No se pudo tomar screenshot: " + e.getMessage());
+        }
+    }
+
 
     @Given("que estoy en la página de login")
     public void estoyEnLaPaginaDeLogin() {
+
     }
 
     @After
