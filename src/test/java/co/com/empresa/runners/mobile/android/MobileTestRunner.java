@@ -6,7 +6,7 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
         features = "src/test/features/mobile/android",
         glue = {"co.com.empresa.steps.mobile.android", "co.com.empresa.hooks"},
-        tags = "@android",
+        tags = "@E2E",
         plugin = {"pretty",
                 "json:target/cucumber-reports/mobile/android/Cucumber.json",
                 "html:target/cucumber-html-reports/mobile/android/android-report.html"
