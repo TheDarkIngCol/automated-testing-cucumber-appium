@@ -100,31 +100,38 @@ public class BasePage {
     }
 
     private void scrollToElementMobile(String locator) {
+        AppiumDriver appiumDriver = (AppiumDriver) driver;
+        int maxSwipes = 10;
+
         try {
-            WebElement element = ((AppiumDriver) driver).findElement(
+            System.out.println("Intentando con UiScrollable: " + locator);
+            WebElement element = appiumDriver.findElement(
                     MobileBy.AndroidUIAutomator(
-                            "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                                    + "new UiSelector().xpath(\"" + locator + "\"));"
+                            "new UiScrollable(new UiSelector().scrollable(true))"
+                                    + ".scrollIntoView(new UiSelector().xpath(\"" + locator + "\"));"
                     )
             );
             if (element.isDisplayed()) {
+                System.out.println("Elemento encontrado con UiScrollable ✅");
                 return;
             }
         } catch (Exception e) {
-            int maxSwipes = 10;
+            System.out.println("UiScrollable falló, usando swipes manuales...");
             for (int i = 0; i < maxSwipes; i++) {
                 try {
                     WebElement el = driver.findElement(By.xpath(locator));
                     if (el.isDisplayed()) {
+                        System.out.println("Elemento encontrado en swipe #" + (i + 1));
                         return;
                     }
                 } catch (Exception ignored) {}
-                swipeVertical(0.7, 0.3); // swipe más natural
+                swipeVertical(0.7, 0.3);
                 sleep(700);
             }
-            throw new NoSuchElementException("No se encontró el elemento tras scroll: " + locator);
         }
+        throw new NoSuchElementException("No se encontró el elemento tras scroll: " + locator);
     }
+
 
 
     public void swipeVertical(double startPercentage, double endPercentage) {
