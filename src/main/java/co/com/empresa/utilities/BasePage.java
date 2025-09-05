@@ -114,7 +114,6 @@ public class BasePage {
                     break;
                 }
             } catch (NoSuchElementException ignored) {
-
             }
             swipeVertical(0.7, 0.3);
             sleep(700);
