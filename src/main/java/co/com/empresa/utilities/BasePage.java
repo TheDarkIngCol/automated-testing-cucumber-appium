@@ -1,7 +1,6 @@
 package co.com.empresa.utilities;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
