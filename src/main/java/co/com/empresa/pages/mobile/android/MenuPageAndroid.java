@@ -15,6 +15,6 @@ public class MenuPageAndroid extends BasePage {
 
     public void menuSuccess() {
         clickBy(menuIcon);
-        click(logginButton);
+        clickAndScroll(logginButton);
     }
 }
