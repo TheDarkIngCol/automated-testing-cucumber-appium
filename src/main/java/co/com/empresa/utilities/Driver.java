@@ -104,6 +104,7 @@ public class Driver extends BasePage {
                         .setPlatformVersion("13.0")
                         .setApp("bs://62f8fbe1955d3ecea2cd41c405e9214d858c62a1")
                         .setCapability("name", nombreEscenario);
+                options.setCapability("interactiveDebugging", true);
                 driver = new AndroidDriver(new URL(BROWSERSTACK_URL), options);
                 System.out.println("Driver Android BrowserStack iniciado correctamente");
             } else {
