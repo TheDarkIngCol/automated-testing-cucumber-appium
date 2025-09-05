@@ -1,7 +1,6 @@
 package co.com.empresa.utilities;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
@@ -92,6 +91,8 @@ public class BasePage {
         }
     }
 
+
+
     private void scrollToElementWeb(String locator) {
         WebElement element = findVisible(locator);
         ((JavascriptExecutor) driver).executeScript(
@@ -102,35 +103,27 @@ public class BasePage {
     private void scrollToElementMobile(String locator) {
         AppiumDriver appiumDriver = (AppiumDriver) driver;
         int maxSwipes = 10;
+        boolean found = false;
 
-        try {
-            System.out.println("Intentando con UiScrollable: " + locator);
-            WebElement element = appiumDriver.findElement(
-                    MobileBy.AndroidUIAutomator(
-                            "new UiScrollable(new UiSelector().scrollable(true))"
-                                    + ".scrollIntoView(new UiSelector().xpath(\"" + locator + "\"));"
-                    )
-            );
-            if (element.isDisplayed()) {
-                System.out.println("Elemento encontrado con UiScrollable ✅");
-                return;
+        for (int i = 0; i < maxSwipes; i++) {
+            try {
+                WebElement el = appiumDriver.findElement(By.xpath(locator));
+                if (el.isDisplayed()) {
+                    System.out.println("Elemento encontrado en swipe #" + (i + 1));
+                    found = true;
+                    break;
+                }
+            } catch (NoSuchElementException ignored) {
             }
-        } catch (Exception e) {
-            System.out.println("UiScrollable falló, usando swipes manuales...");
-            for (int i = 0; i < maxSwipes; i++) {
-                try {
-                    WebElement el = driver.findElement(By.xpath(locator));
-                    if (el.isDisplayed()) {
-                        System.out.println("Elemento encontrado en swipe #" + (i + 1));
-                        return;
-                    }
-                } catch (Exception ignored) {}
-                swipeVertical(0.7, 0.3);
-                sleep(700);
-            }
+            swipeVertical(0.7, 0.3);
+            sleep(700);
         }
-        throw new NoSuchElementException("No se encontró el elemento tras scroll: " + locator);
+
+        if (!found) {
+            throw new NoSuchElementException("No se encontró el elemento tras scroll: " + locator);
+        }
     }
+
 
 
 
