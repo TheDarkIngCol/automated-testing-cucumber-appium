@@ -102,7 +102,7 @@ public class Driver extends BasePage {
             if (isBrowserStack()) {
                 options.setDeviceName("Samsung Galaxy S23 Ultra")
                         .setPlatformVersion("13.0")
-                        .setApp("bs://62f8fbe1955d3ecea2cd41c405e9214d858c62a1")
+                        .setApp("bs://301ee742ff1171e931b01ade6420f6821f101b86")
                         .setCapability("name", nombreEscenario);
                 options.setCapability("interactiveDebugging", true);
                 driver = new AndroidDriver(new URL(BROWSERSTACK_URL), options);
@@ -145,7 +145,7 @@ public class Driver extends BasePage {
             if (isBrowserStack()) {
                 options.setDeviceName("iPhone 15 Pro Max")
                         .setPlatformVersion("17.4")
-                        .setApp("bs://527c9b8ac376be063e4c5edb7834a290d0fa1150")
+                        .setApp("bs://a236901f46bc7671647b5ee462b12bb45ea2de8b")
                         .setCapability("name", nombreEscenario);
                 driver = new IOSDriver(new URL(BROWSERSTACK_URL), options);
                 System.out.println("Driver iOS BrowserStack iniciado correctamente");
