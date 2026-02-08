@@ -1,6 +1,6 @@
 userName: ${BROWSERSTACK_USER}
 accessKey: ${BROWSERSTACK_KEY}
-projectName: KATA_Testing
+projectName: Jorge_Testing
 buildName: Prueba_ValDispositivos
 buildIdentifier: Testing
 

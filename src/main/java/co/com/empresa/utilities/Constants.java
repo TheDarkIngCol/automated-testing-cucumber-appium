@@ -12,6 +12,9 @@ public class Constants extends BasePage {
     public static final String TEXT_EXPECTED_WEB = "Epic sadface: Username and password do not match any user in this service";
     public static final String TITLE_PRODUCTS = "Products";
 
+    public static final String PATH_APK_ANDROID = "src/test/java/resources/apps/android/mda-2.2.0-25.apk";
+    public static final String PATH_APK_IOS = "src/test/java/resources/apps/ios/SauceLabs-Demo-App.ipa";
+
     public static final String FIRST_NAME = "Jorge Iván";
     public static final String LAST_NAME = "Torres Flórez";
     public static final String ZIP_CODE = "111051";
