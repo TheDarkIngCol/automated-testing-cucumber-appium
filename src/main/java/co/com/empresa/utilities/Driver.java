@@ -22,8 +22,13 @@ public class Driver extends BasePage {
     private static final String BROWSERSTACK_USER = System.getenv("BROWSERSTACK_USER");
     private static final String BROWSERSTACK_KEY = System.getenv("BROWSERSTACK_KEY");
     private static final String BROWSERSTACK_URL = "https://" + BROWSERSTACK_USER + ":" + BROWSERSTACK_KEY + "@hub-cloud.browserstack.com/wd/hub";
-    private static final String PATH_APK_ANDROID = "/Users/JORGITO/Documents/JORGE/plantilla-automated-testing-cucumber/src/test/java/resources/apps/android/mda-2.2.0-25.apk";
-    private static final String PATH_APK_IOS = "/Users/JORGITO/Documents/JORGE/plantilla-automated-testing-cucumber/src/test/java/resources/apps/ios/My Demo App.app";
+    private static final String PATH_APK_ANDROID =
+            System.getProperty("user.dir")
+                    + "/src/test/java/resources/apps/android/mda-2.2.0-25.apk";
+
+    private static final String PATH_APK_IOS =
+            System.getProperty("user.dir")
+                    + "src/test/java/resources/apps/ios/SauceLabs-Demo-App.ipa";
 
     public static boolean isBrowserStack() {
         return Boolean.parseBoolean(System.getProperty("browserstack", "false"));
