@@ -77,6 +77,7 @@ Inicia el emulador desde Android Studio o con:
 
 Resultado esperado:
 
+    emulator -list-avds
     List of devices attached
     emulator-5554   device
 
