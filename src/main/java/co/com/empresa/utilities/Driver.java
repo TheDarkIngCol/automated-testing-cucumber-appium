@@ -28,7 +28,7 @@ public class Driver extends BasePage {
 
     private static final String PATH_APK_IOS =
             System.getProperty("user.dir")
-                    + "src/test/java/resources/apps/ios/SauceLabs-Demo-App.ipa";
+                    + "/src/test/java/resources/apps/ios/My Demo App.app";
 
     public static boolean isBrowserStack() {
         return Boolean.parseBoolean(System.getProperty("browserstack", "false"));
